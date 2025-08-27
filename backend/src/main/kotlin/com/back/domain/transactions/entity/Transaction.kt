@@ -1,6 +1,6 @@
-package com.back.backend.domain.transactions.entity
+package com.back.domain.transactions.entity
 
-import com.back.backend.global.jpa.entity.BaseEntity
+import com.back.global.jpa.entity.BaseEntity
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated

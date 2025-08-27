@@ -1,7 +1,7 @@
-package com.back.backend.domain.transactions.service
+package com.back.domain.transactions.service
 
-import com.back.backend.domain.transactions.entity.AccountTransaction
-import com.back.backend.domain.transactions.repository.AccountTransactionRepository
+import com.back.domain.transactions.entity.AccountTransaction
+import com.back.domain.transactions.repository.AccountTransactionRepository
 import org.springframework.stereotype.Service
 
 @Service

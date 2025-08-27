@@ -1,4 +1,4 @@
-package com.back.backend.domain.transactions.dto
+package com.back.domain.transactions.dto
 
 data class CreateTransactionRequestDto(
     val assetId: Int,
