@@ -1,24 +1,22 @@
 package com.back.backend.domain.transactions.service
 
-import com.back.backend.domain.transactions.dto.CreateTransactionRequestDto
-import com.back.backend.domain.transactions.dto.TransactionDto
 import com.back.backend.domain.transactions.dto.UpdateTransactionRequestDto
 import com.back.backend.domain.transactions.entity.Transaction
 import com.back.backend.domain.transactions.entity.TransactionType
 import com.back.backend.domain.transactions.repository.TransactionRepository
-import com.fasterxml.jackson.core.PrettyPrinter
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
 @Service
 class TransactionService (
     private val transactionRepository: TransactionRepository
-    private val assetService: AssetService
-    private val accountService: AccountService
+    //private val assetService: AssetService
+    //private val accountService: AccountService
     // 둘다 각각 asset, account 도메인이 완료 되어야 함.
     // 추가로, 원래 프로젝트에선 repository로 선언되어 있었으나,
     // SRP 원칙에 맞게 서비스를 사용하도록 변경.
 ) {
+    /*
     fun createTransaction(dto: CreateTransactionRequestDto): Transaction {
         val asset: Asset = assetService.findById(dto.assetId).orElseThrow {
             IllegalArgumentException("존재하지 않는 자산입니다.")
@@ -31,8 +29,8 @@ class TransactionService (
             date = LocalDateTime.parse(dto.date)
         )
         return transactionRepository.save(transaction)
-        // Asset 도메인이 추가되어야 함.
     }
+     */// Asset 도메인이 추가되어야 함.
 
     fun findAll() : List<Transaction> {
         return transactionRepository.findAll()
@@ -54,12 +52,14 @@ class TransactionService (
         return transactionRepository.save(transaction)
     }
 
+    /*
     fun findByAssetId(assetId: Int): List<Transaction> {
         assetService.findById(assetId).orElseThrow {
             IllegalArgumentException("존재하지 않는 자산입니다.")
         }
         return transactionRepository.findByAssetId(assetId)
     }
+     */// Asset 도메인이 추가되어야 함.
 
     fun searchTransactions(
         type: String?,
@@ -89,11 +89,12 @@ class TransactionService (
         )
     }
 
+    /*
     fun findTransactionsByAssetId(assetIds: List<Int>): List<Transaction> {
         val allTransactions: List<Transaction> = transactionRepository.findByAssetIdIn(assetIds)
         return allTransactions
             .groupBy { it.asset.id }
             .mapValues { entry -> entry.value.map { TransactionDto(it) } }
     }
-    // Asset 도메인이 추가되어야 함.
+     */// Asset 도메인이 추가되어야 함.
 }

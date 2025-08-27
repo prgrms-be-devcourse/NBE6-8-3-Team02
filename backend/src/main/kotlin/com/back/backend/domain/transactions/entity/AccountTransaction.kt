@@ -3,19 +3,15 @@ package com.back.backend.domain.transactions.entity
 import com.back.backend.global.jpa.entity.BaseEntity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
-import jakarta.persistence.FetchType
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToOne
-import org.hibernate.annotations.OnDelete
-import org.hibernate.annotations.OnDeleteAction
 import java.time.LocalDateTime
 
 class AccountTransaction : BaseEntity() {
+    /*
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     var account : Account? = null;
-    // Account 도메인이 추가되어야함.
+     */// Account 도메인이 추가되어야함.
 
     @Enumerated(EnumType.STRING)
     var type: TransactionType = TransactionType.REMOVE
