@@ -4,15 +4,20 @@ import com.back.backend.global.jpa.entity.BaseEntity
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
+import jakarta.persistence.FetchType
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
+import org.hibernate.annotations.OnDelete
+import org.hibernate.annotations.OnDeleteAction
 import java.time.LocalDateTime
 
 @Entity
 class Transaction : BaseEntity() {
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "asset_id", nullable = false)
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    var asset : Asset? = null;
-    // Asset 도메인이 추가되었을 시에 추가.
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "asset_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    var asset : Asset? = null;
+    // Asset 도메인이 추가되어야함.
 
     @Enumerated(EnumType.STRING)
     var type: TransactionType = TransactionType.REMOVE
