@@ -1,6 +1,6 @@
-package com.back.backend.domain.transactions.repository
+package com.back.domain.transactions.repository
 
-import com.back.backend.domain.transactions.entity.AccountTransaction
+import com.back.domain.transactions.entity.AccountTransaction
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 

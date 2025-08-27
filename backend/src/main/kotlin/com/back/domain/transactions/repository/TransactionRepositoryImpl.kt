@@ -1,8 +1,8 @@
-package com.back.backend.domain.transactions.repository
+package com.back.domain.transactions.repository
 
 import com.back.backend.domain.transactions.entity.QTransaction
-import com.back.backend.domain.transactions.entity.Transaction
-import com.back.backend.domain.transactions.entity.TransactionType
+import com.back.domain.transactions.entity.Transaction
+import com.back.domain.transactions.entity.TransactionType
 import com.querydsl.core.BooleanBuilder
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Repository

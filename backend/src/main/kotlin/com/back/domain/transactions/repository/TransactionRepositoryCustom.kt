@@ -1,7 +1,7 @@
-package com.back.backend.domain.transactions.repository
+package com.back.domain.transactions.repository
 
-import com.back.backend.domain.transactions.entity.Transaction
-import com.back.backend.domain.transactions.entity.TransactionType
+import com.back.domain.transactions.entity.Transaction
+import com.back.domain.transactions.entity.TransactionType
 import java.time.LocalDateTime
 
 interface TransactionRepositoryCustom {

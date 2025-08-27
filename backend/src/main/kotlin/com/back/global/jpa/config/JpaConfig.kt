@@ -1,4 +1,4 @@
-package com.back.backend.global.jpa.config
+package com.back.global.jpa.config
 
 import com.querydsl.jpa.impl.JPAQueryFactory
 import jakarta.persistence.EntityManager

@@ -1,9 +1,9 @@
-package com.back.backend.domain.transactions.service
+package com.back.domain.transactions.service
 
-import com.back.backend.domain.transactions.dto.UpdateTransactionRequestDto
-import com.back.backend.domain.transactions.entity.Transaction
-import com.back.backend.domain.transactions.entity.TransactionType
-import com.back.backend.domain.transactions.repository.TransactionRepository
+import com.back.domain.transactions.dto.UpdateTransactionRequestDto
+import com.back.domain.transactions.entity.Transaction
+import com.back.domain.transactions.entity.TransactionType
+import com.back.domain.transactions.repository.TransactionRepository
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
