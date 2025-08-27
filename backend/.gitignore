@@ -40,8 +40,9 @@ out/
 .kotlin
 
 ### Custom ###
-# Created by https://www.toptal.com/developers/gitignore/api/gradle,kotlin,java,intellij,groovy,git,jetbrains
-# Edit at https://www.toptal.com/developers/gitignore?templates=gradle,kotlin,java,intellij,groovy,git,jetbrains
+db_dev.mv.db
+db_dev.trace.db
+.env
 
 ### Git ###
 # Created by git for backups. To disable backups in Git:
