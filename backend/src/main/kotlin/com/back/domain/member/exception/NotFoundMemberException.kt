@@ -1,4 +1,4 @@
-package com.back.domain.auth.exception
+package com.back.domain.member.exception
 
 import java.lang.RuntimeException
 

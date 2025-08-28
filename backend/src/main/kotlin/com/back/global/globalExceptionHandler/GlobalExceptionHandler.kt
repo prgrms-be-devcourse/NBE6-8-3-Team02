@@ -1,20 +1,26 @@
 package com.back.global.globalExceptionHandler
 
+
 import com.back.global.dto.ErrorResponse
 import com.back.global.rsData.RsData
-import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.MethodArgumentNotValidException
+
+import com.back.domain.member.exception.DuplicateEmailException
+import com.back.domain.member.exception.NotFoundMemberException
+import com.back.domain.member.exception.PasswordMisMatchException
+
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.context.request.WebRequest
 
 @ControllerAdvice
 class GlobalExceptionHandler {
+
     val log: Logger = LoggerFactory.getLogger(this::class.java)
     lateinit var objectMapper: ObjectMapper
     @ExceptionHandler(NoSuchElementException::class)
@@ -87,23 +93,6 @@ class GlobalExceptionHandler {
 
     }
 
-    fun buildErrorResponse(ex: Exception, request: WebRequest, status: HttpStatus): ResponseEntity<ErrorResponse> {
-        val errorResponse = ErrorResponse(
-            status.value(),
-            status.reasonPhrase,
-            ex.message ?: "원인 모를 에러가 발생했습니다.",
-            request.getDescription(false).replace("uri=", ""),
-        )
-
-        try {
-            val json = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(errorResponse)
-            log.error("에러 발생: {}", json)
-        } catch (e: JsonProcessingException) {
-            log.error("JSON 변환 오류: {}", errorResponse)
-        }
-
-        return ResponseEntity(errorResponse, status)
-    }
 
     /*
     AuthenticationException
@@ -117,4 +106,23 @@ class GlobalExceptionHandler {
     AuthenticationException
     Auth 도메인에 구현된 위 1개의 커스텀 Exception은 추후 따로 작성.
      */
+
+    @ExceptionHandler
+    fun handleNotFoundMemberException(ex: NotFoundMemberException, request: WebRequest)
+            : ResponseEntity<ErrorResponse> {
+        return ErrorResponse.buildErrorResponse(ex, request, HttpStatus.NOT_FOUND)
+    }
+
+    @ExceptionHandler
+    fun handleDuplicateEmailException(ex: DuplicateEmailException, request: WebRequest)
+            : ResponseEntity<ErrorResponse> {
+        return ErrorResponse.buildErrorResponse(ex, request, HttpStatus.CONFLICT)
+    }
+
+    @ExceptionHandler
+    fun handlePasswordMisMatchException(ex: PasswordMisMatchException, request: WebRequest)
+            : ResponseEntity<ErrorResponse> {
+        return ErrorResponse.buildErrorResponse(ex, request, HttpStatus.UNAUTHORIZED)
+    }
+
 }

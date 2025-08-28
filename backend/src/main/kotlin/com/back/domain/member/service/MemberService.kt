@@ -3,6 +3,7 @@ package com.back.domain.member.service
 import com.back.domain.member.dto.MemberSignUpRequest
 import com.back.domain.member.dto.MemberSignUpResponse
 import com.back.domain.member.entity.Member
+import com.back.domain.member.exception.DuplicateEmailException
 import com.back.domain.member.extension.toMember
 import com.back.domain.member.extension.toMemberSignUpResponse
 import com.back.domain.member.repository.MemberRepository
@@ -17,7 +18,7 @@ class MemberService(private val memberRepository: MemberRepository,
     @Transactional
     fun join(request: MemberSignUpRequest): MemberSignUpResponse {
         if(memberRepository.existsByEmailAndIsDeletedFalse(request.email)){
-            throw IllegalArgumentException("이미 가입된 이메일입니다.")
+            throw DuplicateEmailException("이미 가입된 이메일입니다.")
         }
 
         val encodePassword = passwordEncoder.encode(request.password)

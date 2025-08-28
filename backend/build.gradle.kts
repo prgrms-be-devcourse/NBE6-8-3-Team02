@@ -38,6 +38,7 @@ dependencies {
 
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9")
     implementation("org.apache.commons:commons-lang3:3.18.0")
+    implementation("io.github.microutils:kotlin-logging:3.0.5")
 
     runtimeOnly("com.h2database:h2")
 

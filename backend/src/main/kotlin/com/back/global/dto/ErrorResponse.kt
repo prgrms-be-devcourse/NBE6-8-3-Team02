@@ -1,29 +1,36 @@
 package com.back.global.dto
 
+import mu.KotlinLogging
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import org.springframework.web.context.request.WebRequest
 import java.time.LocalDateTime
 
-class ErrorResponse (
-    val status: Int,
+
+data class ErrorResponse(
+    val status : Int,
     val error: String,
     val message: String,
     val path: String,
-    val timestamp: LocalDateTime
-) {
-    constructor(status: Int, error: String, message: String, path: String) : this(
-        status,
-        error,
-        message,
-        path,
-        LocalDateTime.now()
-    )
+    val timestamp: LocalDateTime,
+){
+    companion object {
+        private val logger = KotlinLogging.logger {}
 
-    override fun toString(): String {
-        return "ErrorResponse{" +
-                "status=" + status +
-                ", error='" + error + '\'' +
-                ", message='" + message + '\'' +
-                ", path='" + path + '\'' +
-                ", timestamp=" + timestamp +
-                '}'
+        fun buildErrorResponse(exception: Exception, request: WebRequest, status: HttpStatus):
+                ResponseEntity<ErrorResponse> {
+            val errorResponse = ErrorResponse(
+                status = status.value(),
+                error = status.reasonPhrase,
+                message = exception.message ?: "Unexpected error",
+                path = request.getDescription(false).replace(
+                    "uri=", ""
+                ),
+                timestamp = LocalDateTime.now()
+            )
+            logger.error{ errorResponse }
+
+            return ResponseEntity(errorResponse, status)
+        }
     }
 }

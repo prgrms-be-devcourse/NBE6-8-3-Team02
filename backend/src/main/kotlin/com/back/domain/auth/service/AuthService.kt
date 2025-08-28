@@ -2,8 +2,8 @@ package com.back.domain.auth.service
 
 import com.back.domain.auth.dto.MemberLoginRequest
 import com.back.domain.auth.dto.MemberLoginResponse
-import com.back.domain.auth.exception.NotFoundMemberException
-import com.back.domain.member.entity.Member
+import com.back.domain.member.exception.NotFoundMemberException
+import com.back.domain.member.exception.PasswordMisMatchException
 import com.back.domain.member.extension.toMemberLoginResponse
 import com.back.domain.member.service.MemberService
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -21,7 +21,7 @@ class AuthService(
 
 
         if (!passwordEncode.matches(request.password,member.password)) {
-            throw AuthenticationException("비밀번호가 일치하지 않습니다.")
+            throw PasswordMisMatchException("비밀번호가 일치하지 않습니다.")
         }
 
         return member.toMemberLoginResponse()

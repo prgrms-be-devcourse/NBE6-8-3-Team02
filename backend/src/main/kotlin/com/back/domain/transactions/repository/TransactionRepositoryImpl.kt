@@ -17,13 +17,13 @@ class TransactionRepositoryImpl (
 
     override fun findByAccountId(accountId: Int): List<Transaction> {
         val transaction = QTransaction.transaction
-        val asset = QAsset.asset
-        Asset 엔티티가 추가되어야 함.
+        //val asset = QAsset.asset
+        //Asset 엔티티가 추가되어야 함.
 
         return queryFactory
             .selectFrom(transaction)
-            .join(transaction.asset, asset)
-            .where(asset.member.id.eq(accountId))
+            //.join(transaction.asset, asset)
+            //.where(asset.member.id.eq(accountId))
             .fetch()
     }
 
