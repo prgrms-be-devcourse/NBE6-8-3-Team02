@@ -1,5 +1,6 @@
 package com.back.domain.transactions.dto
 
+import com.back.domain.transactions.entity.Transaction
 import java.time.LocalDateTime
 
 data class TransactionDto(
@@ -9,6 +10,17 @@ data class TransactionDto(
     val amount: Long,
     val content: String,
     val date: LocalDateTime,
-    val createdAt: LocalDateTime,
-    val modifyAt: LocalDateTime
-)
+    val createdDate: LocalDateTime,
+    val modifyDate: LocalDateTime
+) {
+    constructor(transaction: Transaction) : this(
+        id = transaction.id,
+        assetId = 0, // transaction.asset.id
+        type = transaction.type.name,
+        amount = transaction.amount,
+        content = transaction.content,
+        date = transaction.date,
+        createdDate = transaction.createDate,
+        modifyDate = transaction.modifyDate,
+    )
+}

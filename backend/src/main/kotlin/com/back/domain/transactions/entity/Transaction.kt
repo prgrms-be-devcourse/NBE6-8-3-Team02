@@ -7,24 +7,14 @@ import jakarta.persistence.Enumerated
 import java.time.LocalDateTime
 
 @Entity
-class Transaction : BaseEntity() {
-    /*
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "asset_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    var asset : Asset? = null;
-     */// Asset 도메인이 추가되어야함.
-
-    @Enumerated(EnumType.STRING)
-    var type: TransactionType = TransactionType.REMOVE
-
-    var amount : Long? = 0L // 거래 량
-
-    var content: String? = null // 필요 메모
-
-    var date : LocalDateTime? = null // 체결일
-
-    // int id(PK) -> BaseEntity
-    // LocalDateTime created_at -> BaseEntity
-    // LocalDateTime modified_at -> BaseEntity
-}
+class Transaction (
+//    @field:ManyToOne(fetch = FetchType.LAZY)
+//    @field:JoinColumn(name = "asset_id", nullable = false)
+//    @field:OnDelete(action = OnDeleteAction.CASCADE)
+//    val asset : Asset,
+    //Asset 도메인 완성 이후 코드로 변환
+    @field:Enumerated(EnumType.STRING) var type : TransactionType,
+    var amount: Long,
+    var content: String,
+    var date: LocalDateTime
+) : BaseEntity()

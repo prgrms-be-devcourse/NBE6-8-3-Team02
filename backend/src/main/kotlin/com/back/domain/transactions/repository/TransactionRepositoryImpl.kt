@@ -1,6 +1,6 @@
 package com.back.domain.transactions.repository
 
-import com.back.backend.domain.transactions.entity.QTransaction
+import com.back.domain.transactions.entity.QTransaction
 import com.back.domain.transactions.entity.Transaction
 import com.back.domain.transactions.entity.TransactionType
 import com.querydsl.core.BooleanBuilder
