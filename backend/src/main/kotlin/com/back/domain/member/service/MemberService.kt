@@ -1,10 +1,14 @@
 package com.back.domain.member.service
 
+import com.back.domain.member.dto.MemberDetailsUpdateRequest
+import com.back.domain.member.dto.MemberDetailsUpdateResponse
 import com.back.domain.member.dto.MemberSignUpRequest
 import com.back.domain.member.dto.MemberSignUpResponse
 import com.back.domain.member.entity.Member
 import com.back.domain.member.exception.DuplicateEmailException
+import com.back.domain.member.exception.UnchangedMemberDetailsException
 import com.back.domain.member.extension.toMember
+import com.back.domain.member.extension.toMemberDetailsUpdateResponse
 import com.back.domain.member.extension.toMemberSignUpResponse
 import com.back.domain.member.repository.MemberRepository
 import jakarta.transaction.Transactional
@@ -29,5 +33,24 @@ class MemberService(private val memberRepository: MemberRepository,
 
     fun findMemberByEmail(email:String): Member?{
         return memberRepository.findByEmail(email)
+    }
+
+    @Transactional
+    fun updateMemberDetails(
+        member: Member,
+        request: MemberDetailsUpdateRequest
+    ): MemberDetailsUpdateResponse {
+
+        request.name?.let { newName ->
+            runCatching { member.updateName(newName) }
+                .onFailure { throw  UnchangedMemberDetailsException("같은 이름으로 수정할 수 없습니다.") }
+
+        }
+        request.phoneNumber?.let { newPhone ->
+            runCatching { member.updatePhoneNumber(newPhone) }
+                .onFailure { throw  UnchangedMemberDetailsException("같은 전화번호로 수정할 수 없습니다.") }
+        }
+
+        return member.toMemberDetailsUpdateResponse()
     }
 }
