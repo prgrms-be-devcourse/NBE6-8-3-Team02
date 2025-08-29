@@ -46,4 +46,19 @@ class JwtUtil (private val jwtConfig: JwtConfig){
         }
     }
 
+    fun getEmailFromToken(token:String):String{
+        return Jwts.parser()
+            .verifyWith(getSigningKey())
+            .build()
+            .parseSignedClaims(token)
+            .payload
+            .subject
+    }
+    fun getRoleFromToken(token:String):String{
+        return Jwts.parser()
+            .verifyWith(getSigningKey())
+            .build()
+            .parseSignedClaims(token)
+            .payload["role"] as String
+    }
 }

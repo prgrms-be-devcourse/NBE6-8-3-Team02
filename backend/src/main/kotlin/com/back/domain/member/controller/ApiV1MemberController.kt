@@ -5,6 +5,7 @@ import com.back.domain.member.dto.MemberDetailsUpdateResponse
 import com.back.domain.member.dto.MemberSignUpRequest
 import com.back.domain.member.dto.MemberSignUpResponse
 import com.back.domain.member.service.MemberService
+import com.back.global.security.CustomMemberDetails
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
@@ -29,16 +30,16 @@ class ApiV1MemberController(private val memberService: MemberService) {
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
-//    @PatchMapping
-//    @Operation(summary = "회원정보 수정", description = "회원 정보를 수정합니다.")
-//    fun updateMember(@AuthenticationPrincipal memberDetails:CustomMemberDetails,
-//                     @RequestBody request: MemberDetailsUpdateRequest
-//    ): ResponseEntity<MemberDetailsUpdateResponse>{
-//
-//        val member = memberDetails.getMember()
-//        val response = memberService.updateMemberDetails(member, request)
-//
-//        return ResponseEntity.ok(response)
-//    }
+    @PatchMapping
+    @Operation(summary = "회원정보 수정", description = "회원 정보를 수정합니다.")
+    fun updateMember(@AuthenticationPrincipal memberDetails: CustomMemberDetails,
+                     @RequestBody request: MemberDetailsUpdateRequest
+    ): ResponseEntity<MemberDetailsUpdateResponse>{
+
+        val member = memberDetails.getMember()
+        val response = memberService.updateMemberDetails(member, request)
+
+        return ResponseEntity.ok(response)
+    }
 
 }
