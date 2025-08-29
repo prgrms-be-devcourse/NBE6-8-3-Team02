@@ -6,7 +6,7 @@ import com.back.domain.auth.service.AuthService
 import com.back.domain.member.extension.toMemberLoginResponse
 import com.back.global.security.jwt.JwtUtil
 import com.back.global.security.jwt.TokenType
-import com.back.global.util.JwtCookie
+import com.back.global.security.jwt.JwtCookieUtil
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1/auth")
 class ApiV1AuthController(
     private val authService: AuthService,
-    private val jwtCookie : JwtCookie,
+    private val jwtCookie : JwtCookieUtil,
     private val jwtUtil: JwtUtil
 ) {
 

@@ -1,14 +1,10 @@
-package com.back.global.util
+package com.back.global.security.jwt
 
-import com.back.global.security.jwt.JwtConfig
-import com.back.global.security.jwt.TokenType
-import jakarta.servlet.http.Cookie
-import org.springframework.http.CacheControl.maxAge
 import org.springframework.http.ResponseCookie
 import org.springframework.stereotype.Component
 
 @Component
-class JwtCookie(private val jwtConfig: JwtConfig) {
+class JwtCookieUtil(private val jwtConfig: JwtConfig) {
 
     fun createJwtCookie(tokenType: TokenType, token:String): ResponseCookie {
         val (cookieName,maxAge) = when (tokenType) {

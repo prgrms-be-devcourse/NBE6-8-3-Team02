@@ -6,6 +6,7 @@ import com.back.domain.member.dto.MemberSignUpRequest
 import com.back.domain.member.dto.MemberSignUpResponse
 import com.back.domain.member.entity.Member
 import com.back.domain.member.exception.DuplicateEmailException
+import com.back.domain.member.exception.NotFoundMemberException
 import com.back.domain.member.exception.UnchangedMemberDetailsException
 import com.back.domain.member.extension.toMember
 import com.back.domain.member.extension.toMemberDetailsUpdateResponse
@@ -31,15 +32,18 @@ class MemberService(private val memberRepository: MemberRepository,
         return memberRepository.save(member).toMemberSignUpResponse()
     }
 
-    fun findMemberByEmail(email:String): Member?{
-        return memberRepository.findByEmail(email)
+    fun findMemberByEmail(email:String): Member{
+        return memberRepository.findByEmail(email)?:
+        throw NotFoundMemberException("존재하지 않는 회원입니다.")
     }
+
 
     @Transactional
     fun updateMemberDetails(
-        member: Member,
+        authMember: Member,
         request: MemberDetailsUpdateRequest
     ): MemberDetailsUpdateResponse {
+        val member = findMemberByEmail(authMember.email)
 
         request.name?.let { newName ->
             runCatching { member.updateName(newName) }

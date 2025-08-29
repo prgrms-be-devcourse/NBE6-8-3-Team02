@@ -4,8 +4,10 @@ import com.back.global.jpa.entity.BaseEntity
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
+import org.hibernate.annotations.DynamicUpdate
 
 @Entity
+@DynamicUpdate
 class Member(
     val email: String,
     val password: String,

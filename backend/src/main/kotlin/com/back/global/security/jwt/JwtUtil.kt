@@ -22,15 +22,14 @@ class JwtUtil (private val jwtConfig: JwtConfig){
         }
         val expiryDate = Date(now.time + validity)
 
-        return Jwts.builder().run{
+        return Jwts.builder().apply{
             setSubject(member.email)
             claim("memberId",member.id)
             claim("role",member.role)
             setIssuedAt(now)
             setExpiration(expiryDate)
             signWith(getSigningKey())
-            compact()
-        }
+        }.compact()
     }
 
     fun validateToken(token: String):Boolean {
