@@ -33,8 +33,8 @@ class ApiV1AuthController(
         val accessToken = jwtUtil.generateToken(member, TokenType.ACCESS_TOKEN)
         val refreshToken = jwtUtil.generateToken(member, TokenType.REFRESH_TOKEN)
 
-        val accessTokenCookie = jwtCookie.createJwtCookie(TokenType.ACCESS_TOKEN, accessToken)
-        val refreshTokenCookie = jwtCookie.createJwtCookie(TokenType.REFRESH_TOKEN, refreshToken)
+        val accessTokenCookie = jwtCookie.createJwtCookie(TokenType.ACCESS_TOKEN, accessToken,false)
+        val refreshTokenCookie = jwtCookie.createJwtCookie(TokenType.REFRESH_TOKEN, refreshToken,false)
 
         return ResponseEntity.ok()
             .header("Set-Cookie",accessTokenCookie.toString())
@@ -42,6 +42,17 @@ class ApiV1AuthController(
             .body(member.toMemberLoginResponse())
     }
 
+    @Operation(summary="로그아웃",description="JWT 토큰이 담긴 쿠키를 삭제합니다.")
+    @PostMapping
+    fun logout():ResponseEntity<Void>{
+        val deleteAccessTokenCookie=jwtCookie.createJwtCookie(TokenType.ACCESS_TOKEN,"",true)
+        val deleteRefreshTokenCookie=jwtCookie.createJwtCookie(TokenType.REFRESH_TOKEN,"",true)
+
+        return ResponseEntity.noContent()
+            .header("Set-Cookie",deleteAccessTokenCookie.toString())
+            .header("Set-Cookie",deleteRefreshTokenCookie.toString())
+            .build()
+    }
 
 
 }
