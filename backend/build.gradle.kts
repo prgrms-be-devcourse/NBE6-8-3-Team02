@@ -1,3 +1,4 @@
+
 plugins {
     kotlin("jvm") version "1.9.25"
     kotlin("plugin.spring") version "1.9.25"
@@ -38,6 +39,7 @@ dependencies {
 
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9")
     implementation("org.apache.commons:commons-lang3:3.18.0")
+    implementation("io.github.microutils:kotlin-logging:3.0.5")
 
     runtimeOnly("com.h2database:h2")
 
@@ -46,9 +48,13 @@ dependencies {
     testImplementation("org.springframework.security:spring-security-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
+
     //queryDSL
     implementation("io.github.openfeign.querydsl:querydsl-jpa:7.0")
     kapt("io.github.openfeign.querydsl:querydsl-apt:7.0:jpa")
+
+    testImplementation("io.mockk:mockk:1.13.2")
+
 }
 
 kotlin {

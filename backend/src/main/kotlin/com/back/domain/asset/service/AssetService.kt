@@ -5,7 +5,9 @@ import com.back.domain.asset.dto.CreateWithoutMemberDto
 import com.back.domain.asset.dto.UpdateAssetRequestDto
 import com.back.domain.asset.entity.Asset
 import com.back.domain.asset.entity.AssetType
+import com.back.domain.asset.entity.QAsset.asset
 import com.back.domain.asset.repository.AssetRepository
+import com.back.domain.member.repository.MemberRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -20,13 +22,13 @@ class AssetService(
         val member = memberRepository.findById(createAssetRequestDto.memberId)
             .orElseThrow { NoSuchElementException("존재하지 않는 회원입니다.") }
 
-        val asset = Asset().apply {
-            this.member = member
-            this.name = createAssetRequestDto.name
-            this.assetType = AssetType.valueOf(createAssetRequestDto.assetType)
-            this.assetValue = createAssetRequestDto.assetValue
-            this.status = true
-        }
+        val asset = Asset(
+            member = member,
+            name = createAssetRequestDto.name,
+            assetType = AssetType.valueOf(createAssetRequestDto.assetType),
+            assetValue = createAssetRequestDto.assetValue,
+            status = true
+        )
 
         return assetRepository.save(asset)
     }
@@ -36,13 +38,13 @@ class AssetService(
         val member = memberRepository.findById(memberId)
             .orElseThrow { NoSuchElementException("존재하지 않는 회원입니다.") }
 
-        val asset = Asset().apply {
-            this.member = member
-            this.name = createWithoutMemberDto.name
-            this.assetType = AssetType.valueOf(createWithoutMemberDto.assetType)
-            this.assetValue = createWithoutMemberDto.assetValue
-            this.status = true
-        }
+        val asset = Asset(
+            member = member,
+            name = createWithoutMemberDto.name,
+            assetType = AssetType.valueOf(createWithoutMemberDto.assetType),
+            assetValue = createWithoutMemberDto.assetValue,
+            status = true
+        )
 
         return assetRepository.save(asset)
     }
