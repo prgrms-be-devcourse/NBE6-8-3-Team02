@@ -14,9 +14,9 @@ class Member(
     var name: String,
     var phoneNumber: String,
     @Enumerated(EnumType.STRING)
-    val role: MemberRole= MemberRole.USER,
-    val isActive: Boolean = true,
-    val isDeleted: Boolean = false,
+    var role: MemberRole= MemberRole.USER,
+    var isActive: Boolean = true,
+    var isDeleted: Boolean = false,
 ): BaseEntity(){
 
     fun updateName(name:String){
@@ -25,5 +25,9 @@ class Member(
 
     fun updatePhoneNumber(phoneNumber: String){
         this.phoneNumber = phoneNumber
+    }
+
+    fun softDelete(){
+        this.isDeleted = true
     }
 }

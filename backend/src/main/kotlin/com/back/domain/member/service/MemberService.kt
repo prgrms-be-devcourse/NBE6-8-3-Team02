@@ -57,4 +57,11 @@ class MemberService(private val memberRepository: MemberRepository,
 
         return member.toMemberDetailsUpdateResponse()
     }
+
+    @Transactional
+    fun softDeleteMember(authMember: Member){
+        val member = findMemberByEmail(authMember.email)
+
+        member.softDelete()
+    }
 }

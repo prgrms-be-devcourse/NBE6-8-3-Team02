@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -40,6 +41,15 @@ class ApiV1MemberController(private val memberService: MemberService) {
         val response = memberService.updateMemberDetails(member, request)
 
         return ResponseEntity.ok(response)
+    }
+
+    @DeleteMapping
+    @Operation(summary = "회원 삭제", description = "회원을 삭제합니다.")
+    fun deleteMember(@AuthenticationPrincipal memberDetails: CustomMemberDetails): ResponseEntity<Void> {
+        val member = memberDetails.getMember()
+
+        memberService.softDeleteMember(member)
+        return ResponseEntity.noContent().build()
     }
 
 }
