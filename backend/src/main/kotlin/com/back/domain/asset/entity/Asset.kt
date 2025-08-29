@@ -1,5 +1,6 @@
 package com.back.domain.asset.entity
 
+import com.back.domain.member.entity.Member
 import com.back.global.jpa.entity.BaseEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -11,9 +12,9 @@ import jakarta.persistence.ManyToOne
 
 @Entity
 class Asset(
-    //@field:ManyToOne(fetch = FetchType.LAZY)
-    //@field:JoinColumn(name = "member_id", nullable = false)
-    //val member: Member,
+    @field:ManyToOne(fetch = FetchType.LAZY)
+    @field:JoinColumn(name = "member_id", nullable = false)
+    var member: Member,
 
     var name: String,
 

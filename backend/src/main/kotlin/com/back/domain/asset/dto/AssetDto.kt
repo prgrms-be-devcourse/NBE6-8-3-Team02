@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 
 data class AssetDto(
     val id: Int,
-    val memberId: Int,
+    //val memberId: Int,
     val name: String,
     val assetType: String,
     val assetValue: Long,
@@ -14,7 +14,7 @@ data class AssetDto(
 ) {
     constructor(asset: Asset) : this(
         asset.id,
-        asset.getMember().getId(),
+        //asset.getMember().getId(),
         asset.name,
         asset.assetType.toString(),
         asset.assetValue,

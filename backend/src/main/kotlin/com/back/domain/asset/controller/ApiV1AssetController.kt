@@ -6,6 +6,7 @@ import com.back.domain.asset.dto.CreateWithoutMemberDto
 import com.back.domain.asset.dto.UpdateAssetRequestDto
 import com.back.domain.asset.service.AssetService
 import com.back.global.rsData.RsData
+import com.back.global.security.CustomMemberDetails
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
@@ -86,9 +87,9 @@ class ApiV1AssetController(
     @GetMapping("/member")
     @Operation(summary = "사용자 기반 자산 목록 조회")
     fun getAssetsByCurrentMember(
-        @AuthenticationPrincipal userDetails: CustomUserDetails
+        @AuthenticationPrincipal userDetails: CustomMemberDetails
     ): ResponseEntity<RsData<List<AssetDto>>> {
-        val memberId = userDetails.member.id
+        val memberId = userDetails.getMember().id
         val assets = assetService.findAllByMemberId(memberId)
         val assetDtos = assets.map { asset -> AssetDto(asset) }
         return ResponseEntity
@@ -99,10 +100,10 @@ class ApiV1AssetController(
     @PostMapping("/member")
     @Operation(summary = "사용자 기반 자산 등록")
     fun createAssetByCurrentMember(
-        @AuthenticationPrincipal userDetails: CustomUserDetails,
+        @AuthenticationPrincipal userDetails: CustomMemberDetails,
         @RequestBody createWithoutMemberDto: CreateWithoutMemberDto
     ): ResponseEntity<RsData<AssetDto>> {
-        val memberId = userDetails.member.id
+        val memberId = userDetails.getMember().id
         val asset = assetService.createAssetByMember(memberId, createWithoutMemberDto)
         val assetDto = AssetDto(asset)
         return ResponseEntity
