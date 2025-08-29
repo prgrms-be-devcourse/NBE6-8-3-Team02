@@ -54,8 +54,9 @@ class AssetService(
     }
 
     @Transactional(readOnly = true)
-    fun findById(id: Int): Asset? {
+    fun findById(id: Int): Asset {
         return assetRepository.findByIdAndStatusTrue(id)
+            ?: throw NoSuchElementException("해당 id는 존재하지 않는 자산입니다. id: $id")
     }
 
     @Transactional(readOnly = true)
