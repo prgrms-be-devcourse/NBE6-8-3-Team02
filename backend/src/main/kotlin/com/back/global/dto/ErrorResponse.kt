@@ -3,19 +3,19 @@ package com.back.global.dto
 import java.time.LocalDateTime
 
 class ErrorResponse (
-    private var status: Int,
-    private var error: String,
-    private var message: String,
-    private var path: String,
-    private var timestamp: LocalDateTime
+    val status: Int,
+    val error: String,
+    val message: String,
+    val path: String,
+    val timestamp: LocalDateTime
 ) {
-    init {
-        this.status = status
-        this.error = error
-        this.message = message
-        this.path = path
-        this.timestamp = timestamp
-    }
+    constructor(status: Int, error: String, message: String, path: String) : this(
+        status,
+        error,
+        message,
+        path,
+        LocalDateTime.now()
+    )
 
     override fun toString(): String {
         return "ErrorResponse{" +
