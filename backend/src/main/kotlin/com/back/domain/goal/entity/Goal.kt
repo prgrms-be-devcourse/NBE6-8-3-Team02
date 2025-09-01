@@ -1,6 +1,5 @@
 package com.back.domain.goal.entity
 
-
 import com.back.domain.member.entity.Member
 import com.back.global.jpa.entity.BaseEntity
 import jakarta.persistence.Entity
@@ -27,7 +26,6 @@ class Goal(
     var status: GoalStatus = GoalStatus.NOT_STARTED
 
 ) : BaseEntity() {
-
 
     val memberId: Int
         get() = member.id!!

@@ -9,11 +9,11 @@ import java.time.LocalDateTime
 
 @Entity
 class Transaction (
-    @field:ManyToOne(fetch = FetchType.LAZY)
-    @field:JoinColumn(name = "asset_id", nullable = false)
-    @field:OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "asset_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     val asset : Asset,
-    @field:Enumerated(EnumType.STRING) var type : TransactionType,
+    @Enumerated(EnumType.STRING) var type : TransactionType,
     var amount: Long,
     var content: String,
     var date: LocalDateTime

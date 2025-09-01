@@ -7,10 +7,10 @@ import java.time.LocalDateTime
 interface TransactionRepositoryCustom {
     fun findByAccountId(accountId: Int): List<Transaction>
     fun searchTransactions(
-        type: TransactionType? = null,
-        startDate: LocalDateTime? = null,
-        endDate: LocalDateTime? = null,
-        minAmount: Int? = null,
-        maxAmount: Int? = null
+        type: TransactionType,
+        startDate: LocalDateTime,
+        endDate: LocalDateTime,
+        minAmount: Int,
+        maxAmount: Int
     ): List<Transaction>
 }

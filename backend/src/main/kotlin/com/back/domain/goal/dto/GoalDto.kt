@@ -2,7 +2,6 @@ package com.back.domain.goal.dto
 
 import com.back.domain.goal.entity.Goal
 import com.back.domain.goal.entity.GoalStatus
-
 import java.time.LocalDateTime
 
 data class GoalDto (
