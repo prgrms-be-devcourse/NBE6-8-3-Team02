@@ -57,6 +57,13 @@ class TransactionService (
         return transactionRepository.save(transaction)
     }
 
+    fun deleteById(id: Int) : Transaction {
+        val transaction =  transactionRepository.findById(id)
+            .orElseThrow { IllegalArgumentException("존재하지 않는 거래입니다.") }
+        transactionRepository.deleteById(id)
+        return transaction
+    }
+
     fun findByAssetId(assetId: Int): List<Transaction> {
         requireNotNull(assetService.findById(assetId)) {
             throw IllegalArgumentException("존재하지 않는 자산입니다.")
