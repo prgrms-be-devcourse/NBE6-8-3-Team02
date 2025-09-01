@@ -60,11 +60,12 @@ class NoticeService (
         return NoticeResponseDto.from(updatedNotice)
     }
 
-    fun deleteNotice(dto: DeleteNoticeRequestDto, member: Member) {
+    fun deleteNotice(dto: DeleteNoticeRequestDto, member: Member) : Notice {
         require(member.role == MemberRole.ADMIN) { "관리자만 공지사항을 삭제할 수 있습니다." }
         val notice: Notice = noticeRepository.findById(dto.id).orElseThrow {
             IllegalArgumentException("공지사항을 찾을 수 없습니다.")
         }
         noticeRepository.delete(notice)
+        return notice
     }
 }

@@ -6,12 +6,14 @@ import com.back.domain.transactions.dto.UpdateTransactionRequestDto
 import com.back.domain.transactions.service.TransactionService
 import com.back.global.rsData.RsData
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v1/transactions/asset")
+@Tag(name = "NoticeController", description = "자산 거래 컨트롤러")
 class ApiV1TransactionController (
     private val transactionService: TransactionService,
 ) {
