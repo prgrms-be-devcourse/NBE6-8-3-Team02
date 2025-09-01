@@ -14,4 +14,6 @@ interface MemberRepository : JpaRepository<Member, Long> {
     fun findByIsDeletedFalse(): List<Member>
     fun findByIsActiveTrueAndIsDeletedFalse(): List<Member>
     fun findByEmailAndNameAndIsDeletedFalse(email: String, name: String): Member?
+    fun findByNameAndPhoneNumberAndIsDeletedFalse(name:String,phoneNumber:String): Member?
+    fun findByEmailAndNameAndPhoneNumberAndIsDeletedFalse(email:String,name:String, phoneNumber:String): Member?
 }

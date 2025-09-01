@@ -36,43 +36,14 @@ class Member(
         this.phoneNumber = newPhoneNumber
     }
 
-    fun updatePassword(
-        currentPassword: String,
-        newPassword: String,
-        passwordEncoder: PasswordEncoder
-    ) {
-        validateCurrentPassword(currentPassword,passwordEncoder)
-        validateNewPassword(newPassword,passwordEncoder)
-        this.password = passwordEncoder.encode(newPassword)
+    fun updatePassword(newPassword: String) {
+        this.password = newPassword
     }
 
     fun softDelete(){
         this.isDeleted = true
     }
 
-    fun validateCurrentPassword(
-        currentPassword: String,
-        passwordEncoder: PasswordEncoder)
-    {
-        if(!passwordEncoder.matches(
-            currentPassword,
-                this.password))
-        {
-            throw PasswordMisMatchException("현재 비밀번호가 일치하지 않습니다.")
-        }
-    }
-
-    fun validateNewPassword(
-        newPassword: String,
-        passwordEncoder: PasswordEncoder
-    ){
-        if(passwordEncoder.matches(
-            newPassword,
-                this.password))
-        {
-            throw UnchangedMemberDetailsException("같은 비밀번호로 수정할 수 없습니다.")
-        }
-    }
 
     fun activate(){
         this.isActive = true

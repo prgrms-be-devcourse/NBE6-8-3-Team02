@@ -1,5 +1,6 @@
 package com.back.domain.member.extension
 
+import com.back.domain.auth.dto.FindAccountResponse
 import com.back.domain.auth.dto.MemberLoginResponse
 import com.back.domain.member.dto.AdminMemberResponse
 import com.back.domain.member.dto.AdminMemberResponse.Companion.maskEmail
@@ -68,4 +69,9 @@ fun Member.toAdminMemberResponse() = AdminMemberResponse(
     status = if (this.isActive) "ACTIVE" else "INACTIVE",
     createDate = this.createDate,
     modifyDate = this.modifyDate
+)
+
+fun Member.toFindAccountResponse() = FindAccountResponse(
+    name = this.name,
+    email = this.email
 )

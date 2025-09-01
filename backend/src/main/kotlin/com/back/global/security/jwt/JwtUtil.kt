@@ -32,18 +32,15 @@ class JwtUtil (private val jwtConfig: JwtConfig){
         }.compact()
     }
 
-    fun validateToken(token: String):Boolean {
-        return try {
+    fun validateToken(token: String): Boolean =
+        runCatching {
             Jwts.parser()
                 .verifyWith(getSigningKey())
                 .build()
                 .parseSignedClaims(token)
-            true
-        }catch(e:RuntimeException) {
-            logger.error("토큰 검증에 실패하였습니다.")
-            false
-        }
-    }
+        }.onFailure { logger.error("토큰 검증에 실패하였습니다.") }
+            .isSuccess
+
 
     fun getEmailFromToken(token:String):String{
         return Jwts.parser()

@@ -1,5 +1,6 @@
 package com.back.global.security.jwt
 
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.CacheControl.maxAge
 import org.springframework.http.ResponseCookie
 import org.springframework.stereotype.Component
@@ -28,5 +29,11 @@ class JwtCookieUtil(private val jwtConfig: JwtConfig) {
             .maxAge(maxAge)
             .sameSite("Lax")
             .build()
+    }
+
+    fun extractRefreshTokenFromCookie(request: HttpServletRequest):String?{
+        return request.cookies
+            ?.firstOrNull { it.name == "refreshToken" }
+            ?.value
     }
 }
