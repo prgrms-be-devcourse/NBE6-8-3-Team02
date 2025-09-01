@@ -1,5 +1,6 @@
 package com.back.domain.member.service
 
+import com.back.domain.member.dto.AdminMemberResponse
 import com.back.domain.member.dto.MemberDetailsUpdateRequest
 import com.back.domain.member.dto.MemberDetailsUpdateResponse
 import com.back.domain.member.dto.MemberPasswordChangeRequest
@@ -8,6 +9,7 @@ import com.back.domain.member.dto.MemberSignUpResponse
 import com.back.domain.member.entity.Member
 import com.back.domain.member.exception.DuplicateEmailException
 import com.back.domain.member.exception.NotFoundMemberException
+import com.back.domain.member.extension.toAdminMemberResponse
 import com.back.domain.member.extension.toMember
 import com.back.domain.member.extension.toMemberDetailsUpdateResponse
 import com.back.domain.member.extension.toMemberSignUpResponse
@@ -73,5 +75,47 @@ class MemberService(private val memberRepository: MemberRepository,
 
     fun isEmailDuplicate(email:String):Boolean{
         return memberRepository.existsByEmailAndIsDeletedFalse(email)
+    }
+
+    fun getAllMembers():List<AdminMemberResponse>{
+        val members = memberRepository.findByIsDeletedFalse()
+
+        return members.map{ member->
+            member.toAdminMemberResponse()
+        }
+    }
+
+    fun getMemberById(memberId:Int):Member{
+        val member = memberRepository.findByIdAndIsDeletedFalse(memberId) ?:
+        throw NotFoundMemberException("존재하지 않는 회원입니다.")
+
+        return member
+    }
+
+    @Transactional
+    fun activateMember(memberId:Int){
+        val member = getMemberById(memberId)
+
+        member.activate()
+    }
+
+    @Transactional
+    fun deactivateMember(memberId:Int){
+        val member = getMemberById(memberId)
+
+        member.deactivate()
+    }
+
+    fun getActiveMembers(): List<AdminMemberResponse> {
+        val members = memberRepository.findByIsActiveTrueAndIsDeletedFalse()
+
+        return members.map { member ->
+            member.toAdminMemberResponse()
+        }
+    }
+
+    fun getMemberByEmailAndName(email: String, name: String): Member {
+        return memberRepository.findByEmailAndNameAndIsDeletedFalse(email, name)
+            ?: throw NotFoundMemberException("존재하지 않는 회원입니다.")
     }
 }

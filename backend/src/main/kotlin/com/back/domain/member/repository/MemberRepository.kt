@@ -9,5 +9,9 @@ import java.util.Optional
 interface MemberRepository : JpaRepository<Member, Long> {
     fun existsByEmailAndIsDeletedFalse(email: String): Boolean
     fun findByEmail(email: String): Member?
-    fun findById(id: Int): Optional<Member>
+    fun findById(memberId: Int): Optional<Member>
+    fun findByIdAndIsDeletedFalse(id: Int): Member?
+    fun findByIsDeletedFalse(): List<Member>
+    fun findByIsActiveTrueAndIsDeletedFalse(): List<Member>
+    fun findByEmailAndNameAndIsDeletedFalse(email: String, name: String): Member?
 }

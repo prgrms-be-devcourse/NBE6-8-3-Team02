@@ -73,4 +73,13 @@ class Member(
             throw UnchangedMemberDetailsException("같은 비밀번호로 수정할 수 없습니다.")
         }
     }
+
+    fun activate(){
+        this.isActive = true
+    }
+
+    fun deactivate(){
+        this.isActive = false
+
+    }
 }

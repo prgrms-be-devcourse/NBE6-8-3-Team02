@@ -1,6 +1,10 @@
 package com.back.domain.member.extension
 
 import com.back.domain.auth.dto.MemberLoginResponse
+import com.back.domain.member.dto.AdminMemberResponse
+import com.back.domain.member.dto.AdminMemberResponse.Companion.maskEmail
+import com.back.domain.member.dto.AdminMemberResponse.Companion.maskName
+import com.back.domain.member.dto.AdminMemberResponse.Companion.maskPhone
 import com.back.domain.member.dto.MemberDetailsUpdateResponse
 import com.back.domain.member.dto.MemberResponse
 import com.back.domain.member.dto.MemberSignUpRequest
@@ -52,6 +56,16 @@ fun Member.toMemberResponse() = MemberResponse(
     phoneNumber = this.phoneNumber,
     role = this.role.name,
     isActive = this.isActive,
+    createDate = this.createDate,
+    modifyDate = this.modifyDate
+)
+
+fun Member.toAdminMemberResponse() = AdminMemberResponse(
+    memberId = this.id,
+    maskedEmail = this.email.maskEmail(),
+    maskedName = this.name.maskName(),
+    maskedPhone = this.phoneNumber.maskPhone(),
+    status = if (this.isActive) "ACTIVE" else "INACTIVE",
     createDate = this.createDate,
     modifyDate = this.modifyDate
 )
