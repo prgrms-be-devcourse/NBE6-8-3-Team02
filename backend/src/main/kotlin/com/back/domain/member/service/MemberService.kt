@@ -2,9 +2,11 @@ package com.back.domain.member.service
 
 import com.back.domain.member.dto.MemberDetailsUpdateRequest
 import com.back.domain.member.dto.MemberDetailsUpdateResponse
+import com.back.domain.member.dto.MemberPasswordChangeRequest
 import com.back.domain.member.dto.MemberSignUpRequest
 import com.back.domain.member.dto.MemberSignUpResponse
 import com.back.domain.member.entity.Member
+import com.back.domain.member.entity.QMember.member
 import com.back.domain.member.exception.DuplicateEmailException
 import com.back.domain.member.exception.NotFoundMemberException
 import com.back.domain.member.exception.UnchangedMemberDetailsException
@@ -46,13 +48,9 @@ class MemberService(private val memberRepository: MemberRepository,
         val member = findMemberByEmail(authMember.email)
 
         request.name?.let { newName ->
-            runCatching { member.updateName(newName) }
-                .onFailure { throw  UnchangedMemberDetailsException("같은 이름으로 수정할 수 없습니다.") }
-
-        }
+            member.updateName(newName)}
         request.phoneNumber?.let { newPhone ->
-            runCatching { member.updatePhoneNumber(newPhone) }
-                .onFailure { throw  UnchangedMemberDetailsException("같은 전화번호로 수정할 수 없습니다.") }
+            member.updatePhoneNumber(newPhone)
         }
 
         return member.toMemberDetailsUpdateResponse()
@@ -63,5 +61,15 @@ class MemberService(private val memberRepository: MemberRepository,
         val member = findMemberByEmail(authMember.email)
 
         member.softDelete()
+    }
+
+    @Transactional
+    fun changePassword(
+        authMember:Member,
+        request: MemberPasswordChangeRequest
+    ){
+        val member = findMemberByEmail(authMember.email)
+
+        member.updatePassword(request.currentPassword,request.newPassword, passwordEncoder)
     }
 }

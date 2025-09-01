@@ -2,12 +2,14 @@ package com.back.domain.member.controller
 
 import com.back.domain.member.dto.MemberDetailsUpdateRequest
 import com.back.domain.member.dto.MemberDetailsUpdateResponse
+import com.back.domain.member.dto.MemberPasswordChangeRequest
 import com.back.domain.member.dto.MemberSignUpRequest
 import com.back.domain.member.dto.MemberSignUpResponse
 import com.back.domain.member.service.MemberService
 import com.back.global.security.CustomMemberDetails
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.apache.coyote.Response
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -50,6 +52,18 @@ class ApiV1MemberController(private val memberService: MemberService) {
 
         memberService.softDeleteMember(member)
         return ResponseEntity.noContent().build()
+    }
+
+    @PatchMapping("/password")
+    @Operation(summary = "비밀번호 변경", description = "회원의 비밀번호를 변경합니다.")
+    fun changePassword(
+        @AuthenticationPrincipal memberDetails: CustomMemberDetails,
+        @RequestBody request: MemberPasswordChangeRequest
+    ): ResponseEntity<String> {
+        val authMember = memberDetails.getMember()
+        memberService.changePassword(authMember, request)
+
+        return ResponseEntity.ok("비밀번호가 성공적으로 변경되었습니다.")
     }
 
 }

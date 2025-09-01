@@ -1,5 +1,7 @@
 package com.back.domain.goal.entity
 
+
+import com.back.domain.member.entity.Member
 import com.back.global.jpa.entity.BaseEntity
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -13,8 +15,8 @@ import java.time.LocalDateTime
 @Entity
 @SoftDelete
 class Goal(
-//    @ManyToOne
-//    var member: Member,
+    @ManyToOne
+    var member: Member,
 
     var description: String,
     var targetAmount: Long,
@@ -26,8 +28,9 @@ class Goal(
 
 ) : BaseEntity() {
 
-//    val memberId: Int
-//        get() = member.id!!
+
+    val memberId: Int
+        get() = member.id!!
 
     fun update(
         description: String,
