@@ -1,11 +1,9 @@
 package com.back.domain.goal.service
 
+// import com.back.domain.member.entity.Member // Member 팀 작업 전까지 주석 처리
 import com.back.domain.goal.dto.GoalRequestDto
 import com.back.domain.goal.entity.Goal
 import com.back.domain.goal.repository.GoalRepository
-// import com.back.domain.member.entity.Member // Member 팀 작업 전까지 주석 처리
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -28,12 +26,12 @@ class GoalService(
     }
     */
 
-    @Transactional
-    fun create(/*member: Member,*/ requestDto: GoalRequestDto): Goal {
-        // DTO의 확장 함수를 사용하여 Entity를 생성
-        val goal = requestDto.toEntity(/*member*/)
-        return goalRepository.save(goal)
-    }
+//    @Transactional
+//    fun create(/*member: Member,*/ requestDto: GoalRequestDto): Goal {
+//        // DTO의 확장 함수를 사용하여 Entity를 생성
+//        val goal = requestDto.toEntity(/*member*/)
+//        return goalRepository.save(goal)
+//    }
 
     @Transactional
     fun modify(id: Long, requestDto: GoalRequestDto) {

@@ -30,6 +30,7 @@ class NoticeService {
         return NoticeResponseDto.from(savedNotice)
     }
 
+    //Kotlin 스타일로, if 문 수정.
     fun getAllNotices(search: String, pageable: Pageable): Page<NoticeResponseDto> {
         var notices: Page<Notice>
         if(search.isNotBlank()) {notices = noticeRepository.findByTitleContainingIgnoreCase(search, pageable)}
@@ -48,15 +49,18 @@ class NoticeService {
     }
 
     fun updateNotice(id: Int, dto: UpdateNoticeRequestDto, /*member: Member*/): NoticeResponseDto {
-        val notice: Notice = noticeRepository.findById(id).orElseThrow {
+        val notice = noticeRepository.findById(id).orElseThrow {
             IllegalArgumentException("공지사항을 찾을 수 없습니다.")
         }
 
         //if(member.role != MemberRole.ADMIN) { throw IllegalArgumentException("관리자만 공지사항을 수정할 수 있습니다.") }
 
-        if(dto.title.isNotBlank()) {notice.title = dto.title}
-        if(dto.content.isNotBlank()) {notice.content = dto.content}
-        if(dto.fileUrl.isNotBlank()) {notice.fileUrl = dto.fileUrl}
+        //Kotlin 스타일로, 공백 체크같은 걸 깔끔하게.
+        //Notice의 상태를 업데이트 하는 로직, 엔티티 내부의 함수로 변경하는 게 좋지 않을까?
+        //if(dto.title.isNotBlank()) {notice.title = dto.title}
+        //if(dto.content.isNotBlank()) {notice.content = dto.content}
+        //if(dto.fileUrl.isNotBlank()) {notice.fileUrl = dto.fileUrl}
+        notice.update(dto)
 
         val updatedNotice: Notice = noticeRepository.save(notice)
         return NoticeResponseDto.from(updatedNotice)

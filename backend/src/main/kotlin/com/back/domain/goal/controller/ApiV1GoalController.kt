@@ -8,17 +8,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("api/v1/goals")
@@ -62,22 +52,22 @@ class ApiV1GoalController (
         )
     }
 
-    @PostMapping
-    @Operation(summary = "생성")
-    fun create(
-        //@AuthenticationPrincipal userDetails: CunstomUserDetails, // Member 팀 작업 전까지 주석 처리
-        @Valid @RequestBody requestDto: GoalRequestDto
-    ): ResponseEntity<RsData<GoalDto>> {
-        val goal = goalService.create(/*userDetails.member,*/ requestDto) // Member 팀 작업 전까지 주석 처리
-
-        return ResponseEntity.ok(
-            RsData(
-                resultCode = "201-1",
-                msg = "목표(id: ${goal.id})가 생성되었습니다.",
-                data = GoalDto.from(goal) // DTO의 팩토리 메소드 사용
-            )
-        )
-    }
+//    @PostMapping
+//    @Operation(summary = "생성")
+//    fun create(
+//        //@AuthenticationPrincipal userDetails: CunstomUserDetails, // Member 팀 작업 전까지 주석 처리
+//        @Valid @RequestBody requestDto: GoalRequestDto
+//    ): ResponseEntity<RsData<GoalDto>> {
+//        val goal = goalService.create(/*userDetails.member,*/ requestDto) // Member 팀 작업 전까지 주석 처리
+//
+//        return ResponseEntity.ok(
+//            RsData(
+//                resultCode = "201-1",
+//                msg = "목표(id: ${goal.id})가 생성되었습니다.",
+//                data = GoalDto.from(goal) // DTO의 팩토리 메소드 사용
+//            )
+//        )
+//    }
 
     @PutMapping("/{id}")
     @Operation(summary = "수정")
