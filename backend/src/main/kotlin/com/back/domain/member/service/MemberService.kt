@@ -1,5 +1,7 @@
 package com.back.domain.member.service
 
+import com.back.domain.auth.service.AuthService
+import com.back.domain.auth.service.ValidatePasswordService
 import com.back.domain.member.dto.AdminMemberResponse
 import com.back.domain.member.dto.MemberDetailsUpdateRequest
 import com.back.domain.member.dto.MemberDetailsUpdateResponse
@@ -19,8 +21,11 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
-class MemberService(private val memberRepository: MemberRepository,
-                    private val passwordEncoder: PasswordEncoder) {
+class MemberService(
+    private val memberRepository: MemberRepository,
+    private val passwordEncoder: PasswordEncoder,
+    private val validatePasswordService: ValidatePasswordService
+) {
 
     @Transactional
     fun join(request: MemberSignUpRequest): MemberSignUpResponse {
@@ -69,8 +74,11 @@ class MemberService(private val memberRepository: MemberRepository,
         request: MemberPasswordChangeRequest
     ){
         val member = findMemberByEmail(authMember.email)
+        validatePasswordService.validateCurrentPassword(member,request.currentPassword)
+        validatePasswordService.validateNewPassword(member,request.newPassword)
 
-        member.updatePassword(request.currentPassword,request.newPassword, passwordEncoder)
+        val encodedNewPassword = passwordEncoder.encode(request.newPassword)
+        member.updatePassword(encodedNewPassword)
     }
 
     fun isEmailDuplicate(email:String):Boolean{
