@@ -72,4 +72,8 @@ class MemberService(private val memberRepository: MemberRepository,
 
         member.updatePassword(request.currentPassword,request.newPassword, passwordEncoder)
     }
+
+    fun isEmailDuplicate(email:String):Boolean{
+        return memberRepository.existsByEmailAndIsDeletedFalse(email)
+    }
 }

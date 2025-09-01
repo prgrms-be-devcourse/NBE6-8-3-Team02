@@ -52,6 +52,8 @@ dependencies {
     //queryDSL
     implementation("io.github.openfeign.querydsl:querydsl-jpa:7.0")
     kapt("io.github.openfeign.querydsl:querydsl-apt:7.0:jpa")
+    //implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+    //kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
 
     testImplementation("io.mockk:mockk:1.13.2")
 

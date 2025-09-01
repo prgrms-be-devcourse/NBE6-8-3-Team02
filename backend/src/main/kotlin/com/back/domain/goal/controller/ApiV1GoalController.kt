@@ -62,23 +62,6 @@ class ApiV1GoalController (
         )
     }
 
-    @PostMapping
-    @Operation(summary = "생성")
-    fun create(
-        //@AuthenticationPrincipal userDetails: CunstomUserDetails, // Member 팀 작업 전까지 주석 처리
-        @Valid @RequestBody requestDto: GoalRequestDto
-    ): ResponseEntity<RsData<GoalDto>> {
-        val goal = goalService.create(/*userDetails.member,*/ requestDto) // Member 팀 작업 전까지 주석 처리
-
-        return ResponseEntity.ok(
-            RsData(
-                resultCode = "201-1",
-                msg = "목표(id: ${goal.id})가 생성되었습니다.",
-                data = GoalDto.from(goal) // DTO의 팩토리 메소드 사용
-            )
-        )
-    }
-
 //    @PostMapping
 //    @Operation(summary = "생성")
 //    fun create(
