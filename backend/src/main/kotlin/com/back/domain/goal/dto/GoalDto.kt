@@ -22,7 +22,7 @@ data class GoalDto (
                 description = goal.description,
                 currentAmount = goal.currentAmount,
                 targetAmount = goal.targetAmount,
-                deadline = goal.deadling,
+                deadline = goal.deadline,
                 status = goal.status,
             )
         }

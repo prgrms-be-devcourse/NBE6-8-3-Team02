@@ -1,6 +1,6 @@
 package com.back.domain.transactions.entity
 
-import com.back.domain.account.Account
+import com.back.domain.account.entity.Account
 import com.back.global.jpa.entity.BaseEntity
 import jakarta.persistence.*
 import org.hibernate.annotations.OnDelete
