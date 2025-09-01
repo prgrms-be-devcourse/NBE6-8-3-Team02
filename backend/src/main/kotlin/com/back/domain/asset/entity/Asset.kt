@@ -24,7 +24,7 @@ class Asset(
     var assetValue: Long,
 
     @field:Column(nullable = false)
-    var status: Boolean
+    var status: Boolean = true
 ) : BaseEntity() {
 
 }

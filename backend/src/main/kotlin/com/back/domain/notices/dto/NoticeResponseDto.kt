@@ -8,7 +8,7 @@ data class NoticeResponseDto (
     val title: String,
     val content: String,
     val views: Int,
-    val fileUrl: String,
+    val fileUrl: String?,
     val wrtierName: String,
     val createDate: LocalDateTime,
     val updateDate: LocalDateTime
