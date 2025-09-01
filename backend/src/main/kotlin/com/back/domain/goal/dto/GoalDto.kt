@@ -18,7 +18,7 @@ data class GoalDto (
         fun from(goal: Goal): GoalDto {
             return GoalDto(
                 id = goal.id,
-                memberId = goal.memberId,
+                memberId = goal.member.id,
                 description = goal.description,
                 currentAmount = goal.currentAmount,
                 targetAmount = goal.targetAmount,

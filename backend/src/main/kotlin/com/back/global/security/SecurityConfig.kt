@@ -47,7 +47,7 @@ class SecurityConfig(private val jwtAuthenticationFilter: JwtAuthenticationFilte
                 .requestMatchers("/api/v1/members/search/**").authenticated()                  // 이메일/이름으로 조회
                 .requestMatchers(HttpMethod.PATCH, "/api/v1/members").authenticated() // 본인 정보 수정
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/members").authenticated() // 본인 정보 삭제
-                .requestMatchers(HttpMethod.PATCH, "/api/v1/members/{memberId}/password").authenticated() // 비밀번호 변경
+                .requestMatchers(HttpMethod.PATCH, "/api/v1/members/password").authenticated() // 비밀번호 변경
 
                 // 자산관리 관련 API - 인증된 사용자만
                 .requestMatchers("/api/v1/assets/**").authenticated()        // 자산 관리

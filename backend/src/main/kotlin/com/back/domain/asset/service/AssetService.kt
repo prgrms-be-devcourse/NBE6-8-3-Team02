@@ -5,7 +5,6 @@ import com.back.domain.asset.dto.CreateWithoutMemberDto
 import com.back.domain.asset.dto.UpdateAssetRequestDto
 import com.back.domain.asset.entity.Asset
 import com.back.domain.asset.entity.AssetType
-import com.back.domain.asset.entity.QAsset.asset
 import com.back.domain.asset.repository.AssetRepository
 import com.back.domain.member.repository.MemberRepository
 import org.springframework.stereotype.Service

@@ -2,20 +2,26 @@ package com.back.domain.member.controller
 
 import com.back.domain.member.dto.MemberDetailsUpdateRequest
 import com.back.domain.member.dto.MemberDetailsUpdateResponse
+import com.back.domain.member.dto.MemberPasswordChangeRequest
+import com.back.domain.member.dto.MemberResponse
 import com.back.domain.member.dto.MemberSignUpRequest
 import com.back.domain.member.dto.MemberSignUpResponse
+import com.back.domain.member.extension.toMemberResponse
 import com.back.domain.member.service.MemberService
 import com.back.global.security.CustomMemberDetails
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.apache.coyote.Response
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -51,5 +57,35 @@ class ApiV1MemberController(private val memberService: MemberService) {
         memberService.softDeleteMember(member)
         return ResponseEntity.noContent().build()
     }
+
+    @PatchMapping("/password")
+    @Operation(summary = "비밀번호 변경", description = "회원의 비밀번호를 변경합니다.")
+    fun changePassword(
+        @AuthenticationPrincipal memberDetails: CustomMemberDetails,
+        @RequestBody request: MemberPasswordChangeRequest
+    ): ResponseEntity<String> {
+        val authMember = memberDetails.getMember()
+        memberService.changePassword(authMember, request)
+
+        return ResponseEntity.ok("비밀번호가 성공적으로 변경되었습니다.")
+    }
+
+    @GetMapping("/check-email")
+    @Operation(summary = "이메일 중복 검사", description = "이메일 중복 여부를 검사합니다.")
+    fun checkEmailDuplicate(@RequestParam email: String): ResponseEntity<Boolean> {
+        val isDuplicate = memberService.isEmailDuplicate(email)
+        return ResponseEntity.ok(isDuplicate)
+    }
+
+    @GetMapping("/me")
+    @Operation(summary = "현재 사용자 조회", description = "현재 로그인된 사용자의 정보를 조회합니다.")
+    fun getCurrentUser(@AuthenticationPrincipal memberDetails: CustomMemberDetails)
+            : ResponseEntity<MemberResponse> {
+        val authMember = memberDetails.getMember()
+        val response = authMember.toMemberResponse()
+
+        return ResponseEntity.ok(response)
+    }
+
 
 }
