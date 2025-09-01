@@ -6,10 +6,8 @@ import com.back.domain.member.dto.MemberPasswordChangeRequest
 import com.back.domain.member.dto.MemberSignUpRequest
 import com.back.domain.member.dto.MemberSignUpResponse
 import com.back.domain.member.entity.Member
-import com.back.domain.member.entity.QMember.member
 import com.back.domain.member.exception.DuplicateEmailException
 import com.back.domain.member.exception.NotFoundMemberException
-import com.back.domain.member.exception.UnchangedMemberDetailsException
 import com.back.domain.member.extension.toMember
 import com.back.domain.member.extension.toMemberDetailsUpdateResponse
 import com.back.domain.member.extension.toMemberSignUpResponse
