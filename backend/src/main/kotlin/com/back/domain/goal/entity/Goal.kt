@@ -19,8 +19,8 @@ class Goal(
 
     var description: String,
     var targetAmount: Long,
-    var deadling: LocalDateTime?,
     var currentAmount: Long,
+    var deadline: LocalDateTime?,
 
     @Enumerated(EnumType.STRING)
     var status: GoalStatus = GoalStatus.NOT_STARTED
@@ -37,13 +37,14 @@ class Goal(
     ) {
         this.description = description
         this.targetAmount = targetAmount
-        this.deadling = deadline
+        this.deadline = deadline
     }
-        fun updateCurrentAmount(currentAmount: Long) {
-            this.currentAmount = currentAmount
-        }
 
-        fun updateStatus(status: GoalStatus) {
-            this.status = status
-        }
+    fun updateCurrentAmount(currentAmount: Long) {
+        this.currentAmount = currentAmount
     }
+
+    fun updateStatus(status: GoalStatus) {
+        this.status = status
+    }
+}
