@@ -3,8 +3,10 @@ package com.back.domain.member.controller
 import com.back.domain.member.dto.MemberDetailsUpdateRequest
 import com.back.domain.member.dto.MemberDetailsUpdateResponse
 import com.back.domain.member.dto.MemberPasswordChangeRequest
+import com.back.domain.member.dto.MemberResponse
 import com.back.domain.member.dto.MemberSignUpRequest
 import com.back.domain.member.dto.MemberSignUpResponse
+import com.back.domain.member.extension.toMemberResponse
 import com.back.domain.member.service.MemberService
 import com.back.global.security.CustomMemberDetails
 import io.swagger.v3.oas.annotations.Operation
@@ -74,5 +76,16 @@ class ApiV1MemberController(private val memberService: MemberService) {
         val isDuplicate = memberService.isEmailDuplicate(email)
         return ResponseEntity.ok(isDuplicate)
     }
+
+    @GetMapping("/me")
+    @Operation(summary = "현재 사용자 조회", description = "현재 로그인된 사용자의 정보를 조회합니다.")
+    fun getCurrentUser(@AuthenticationPrincipal memberDetails: CustomMemberDetails)
+            : ResponseEntity<MemberResponse> {
+        val authMember = memberDetails.getMember()
+        val response = authMember.toMemberResponse()
+
+        return ResponseEntity.ok(response)
+    }
+
 
 }
