@@ -69,18 +69,26 @@ export default function LoginPage() {
       console.log("응답 데이터 키들:", Object.keys(response));
 
       // 응답에서 역할 정보 추출
-      const userRole = response.role || response.userRole || response.authorities?.[0]?.authority || 'USER';
-      console.log('Login response role:', userRole);
-      console.log('Login response 전체 구조:', JSON.stringify(response, null, 2));
+      const userRole =
+        response.role ||
+        response.userRole ||
+        response.authorities?.[0]?.authority ||
+        "USER";
+      console.log("Login response role:", userRole);
+      console.log(
+        "Login response 전체 구조:",
+        JSON.stringify(response, null, 2)
+      );
 
       // 토큰 정보 확인
-      const accessToken = response.accessToken || response.token || response.access_token;
+      const accessToken =
+        response.accessToken || response.token || response.access_token;
       const refreshToken = response.refreshToken || response.refresh_token;
 
-      console.log('토큰 정보:', {
-        accessToken: accessToken ? '있음' : '없음',
-        refreshToken: refreshToken ? '있음' : '없음',
-        userRole: userRole
+      console.log("토큰 정보:", {
+        accessToken: accessToken ? "있음" : "없음",
+        refreshToken: refreshToken ? "있음" : "없음",
+        userRole: userRole,
       });
 
       if (accessToken) {
@@ -90,54 +98,54 @@ export default function LoginPage() {
           userId: response.userId || response.memberId || response.id,
           userEmail: response.email,
           userRole: userRole,
-          refreshToken: refreshToken
+          refreshToken: refreshToken,
         };
 
-        console.log('설정할 인증 데이터:', authData);
+        console.log("설정할 인증 데이터:", authData);
 
         const success = authAPI.setAuthStatus(authData);
 
         if (success) {
-          console.log('인증 상태 설정 성공');
+          console.log("인증 상태 설정 성공");
           // 역할에 따라 즉시 리다이렉트
-          if (userRole === 'ADMIN' || userRole === 'ROLE_ADMIN') {
-            console.log('관리자로 인식, /admin으로 리다이렉트');
+          if (userRole === "ADMIN" || userRole === "ROLE_ADMIN") {
+            console.log("관리자로 인식, /admin으로 리다이렉트");
             window.location.replace("/admin");
           } else {
-            console.log('일반 사용자로 인식, /mypage로 리다이렉트');
+            console.log("일반 사용자로 인식, /mypage로 리다이렉트");
             window.location.replace("/mypage");
           }
         } else {
-          console.error('인증 상태 설정 실패');
+          console.error("인증 상태 설정 실패");
           setError("로그인 상태 저장에 실패했습니다.");
         }
-              } else {
-          console.log('Access token이 없음, 쿠키 확인 시도');
-          // 쿠키에서 토큰 확인
-          const cookies = document.cookie.split(';');
-          const accessTokenCookie = cookies.find(cookie =>
-            cookie.trim().startsWith('accessToken=')
-          );
+      } else {
+        console.log("Access token이 없음, 쿠키 확인 시도");
+        // 쿠키에서 토큰 확인
+        const cookies = document.cookie.split(";");
+        const accessTokenCookie = cookies.find((cookie) =>
+          cookie.trim().startsWith("accessToken=")
+        );
 
-          if (accessTokenCookie) {
-            const token = accessTokenCookie.split('=')[1];
-            console.log('쿠키에서 토큰 발견:', token ? '있음' : '없음');
+        if (accessTokenCookie) {
+          const token = accessTokenCookie.split("=")[1];
+          console.log("쿠키에서 토큰 발견:", token ? "있음" : "없음");
 
           const authData = {
-            authToken: token,
+            //authToken: token,
             userId: response.userId || response.memberId || response.id,
             userEmail: response.email,
-            userRole: userRole,
-            refreshToken: refreshToken
+            userRole: response.role,
+            //refreshToken: refreshToken
           };
 
-          console.log('쿠키 토큰으로 설정할 인증 데이터:', authData);
+          console.log("쿠키 토큰으로 설정할 인증 데이터:", authData);
 
           const success = authAPI.setAuthStatus(authData);
 
           if (success) {
-            console.log('쿠키 토큰으로 인증 상태 설정 성공');
-            if (userRole === 'ADMIN' || userRole === 'ROLE_ADMIN') {
+            console.log("쿠키 토큰으로 인증 상태 설정 성공");
+            if (userRole === "ADMIN" || userRole === "ROLE_ADMIN") {
               window.location.replace("/admin");
             } else {
               window.location.replace("/mypage");
@@ -146,8 +154,12 @@ export default function LoginPage() {
             setError("로그인 상태 저장에 실패했습니다.");
           }
         } else {
-          console.error('토큰을 찾을 수 없음 - 응답과 쿠키 모두 확인됨');
-          setError(response.message || response.error || "로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.");
+          console.error("토큰을 찾을 수 없음 - 응답과 쿠키 모두 확인됨");
+          setError(
+            response.message ||
+              response.error ||
+              "로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요."
+          );
         }
       }
     } catch (error) {

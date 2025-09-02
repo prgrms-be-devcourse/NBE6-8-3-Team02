@@ -51,7 +51,7 @@ class ApiV1AuthController(
     }
 
     @Operation(summary = "로그아웃", description = "JWT 토큰이 담긴 쿠키를 삭제합니다.")
-    @PostMapping
+    @PostMapping("logout")
     fun logout(): ResponseEntity<Void> {
         val deleteAccessTokenCookie = jwtCookie.createJwtCookie(TokenType.ACCESS_TOKEN, "", true)
         val deleteRefreshTokenCookie = jwtCookie.createJwtCookie(TokenType.REFRESH_TOKEN, "", true)

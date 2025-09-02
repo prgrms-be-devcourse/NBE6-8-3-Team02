@@ -205,7 +205,9 @@ export const authAPI = {
       const data = await response.json();
 
       // 200 OK 또는 201 CREATED 모두 성공으로 처리
-      if (!response.ok && response.status !== 201) {
+      if (response.status == 201) {
+        alert(`반갑습니다. ${data.name}님`);
+      } else if (!response.ok && response.status !== 201) {
         throw new Error(
           data.msg ||
             data.message ||
@@ -376,15 +378,18 @@ export const authAPI = {
         }
       );
 
-      const data = await response.json();
+      //const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(
-          data.msg || data.message || `HTTP error! status: ${response.status}`
-        );
+      // if (!response.ok) {
+      //   throw new Error(
+      //     data.msg || data.message || `HTTP error! status: ${response.status}`
+      //   );
+      // }
+      if (response.ok) {
+        alert("임시 비밀번호가 발급되었습니다.");
       }
 
-      return data;
+      //return data;
     } catch (error) {
       console.error("비밀번호 재설정 API 에러:", error);
       throw error;
@@ -392,31 +397,34 @@ export const authAPI = {
   },
 
   // 비밀번호 변경
-  async changePassword(memberId, newPassword) {
+  async changePassword(memberId, currentPassword, newPassword) {
     try {
-      const token = localStorage.getItem("authToken");
+      //const token = localStorage.getItem("authToken");
       const response = await fetch(
-        `http://localhost:8080/api/v1/members/${memberId}/password`,
+        `http://localhost:8080/api/v1/members/password`,
         {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            //Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ newPassword }),
+          body: JSON.stringify({
+            currentPassword: currentPassword,
+            newPassword: newPassword,
+          }),
           credentials: "include",
         }
       );
 
-      const data = await response.json();
+      // const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(
-          data.msg || data.message || `HTTP error! status: ${response.status}`
-        );
-      }
+      // if (!response.ok) {
+      //   throw new Error(
+      //     data.msg || data.message || `HTTP error! status: ${response.status}`
+      //   );
+      // }
 
-      return data;
+      // return data;
     } catch (error) {
       console.error("비밀번호 변경 API 에러:", error);
       throw error;
@@ -456,27 +464,36 @@ export const authAPI = {
   // 로그아웃
   async logout() {
     try {
-      const token = localStorage.getItem("authToken");
+      //const token = localStorage.getItem("authToken");
 
-      if (token) {
-        const response = await fetch(
-          "http://localhost:8080/api/v1/auth/logout",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            credentials: "include",
-          }
-        );
-      }
+      //  if (token) {
+      //   const response = await fetch(
+      //     "http://localhost:8080/api/v1/auth/logout",
+      //     {
+      //       method: "POST",
+      //       headers: {
+      //         "Content-Type": "application/json",
+      //         //Authorization: `Bearer ${token}`,
+      //       },
+      //       credentials: "include",
+      //     }
+      //   );
+      // }
+
+      const response = await fetch("http://localhost:8080/api/v1/auth/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          //Authorization: `Bearer ${token}`,
+        },
+        credentials: "include",
+      });
     } catch (error) {
       console.error("로그아웃 API 에러:", error);
     } finally {
       if (typeof window !== "undefined") {
-        localStorage.removeItem("authToken");
-        localStorage.removeItem("refreshToken");
+        //localStorage.removeItem("authToken");
+        //localStorage.removeItem("refreshToken");
         localStorage.removeItem("userId");
         localStorage.removeItem("userEmail");
         localStorage.removeItem("userRole");
@@ -489,35 +506,36 @@ export const authAPI = {
   // 회원 탈퇴
   async withdrawAccount(memberId) {
     try {
-      const token = await this.getValidAccessToken();
-      if (!token) {
-        throw new Error("유효한 토큰이 없습니다.");
+      // const token = await this.getValidAccessToken();
+      // if (!token) {
+      //   throw new Error("유효한 토큰이 없습니다.");
+      // }
+
+      const response = await fetch(`http://localhost:8080/api/v1/members`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          //Authorization: `Bearer ${token}`,
+        },
+        credentials: "include",
+      });
+
+      if (response.status === 200) {
+        alert("성공적으로 회원 탈퇴 되었습니다.");
       }
 
-      const response = await fetch(
-        `http://localhost:8080/api/v1/members/${memberId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          credentials: "include",
-        }
-      );
+      // const data = await response.json();
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data.msg || data.message || `HTTP error! status: ${response.status}`
-        );
-      }
+      // if (!response.ok) {
+      //   throw new Error(
+      //     data.msg || data.message || `HTTP error! status: ${response.status}`
+      //   );
+      // }
 
       // 회원 탈퇴 성공 시 로그아웃 처리
       await this.logout();
 
-      return data;
+      //return data;
     } catch (error) {
       console.error("회원 탈퇴 API 에러:", error);
       throw error;
@@ -551,9 +569,9 @@ export const authAPI = {
   // 로그인 상태를 강제로 설정하는 함수
   setAuthStatus(authData) {
     try {
-      if (authData.authToken) {
-        localStorage.setItem("authToken", authData.authToken);
-      }
+      // if (authData.authToken) {
+      //   localStorage.setItem("authToken", authData.authToken);
+      // }
       if (authData.userRole) {
         localStorage.setItem("userRole", authData.userRole);
       }
@@ -563,9 +581,9 @@ export const authAPI = {
       if (authData.userEmail) {
         localStorage.setItem("userEmail", authData.userEmail);
       }
-      if (authData.refreshToken) {
-        localStorage.setItem("refreshToken", authData.refreshToken);
-      }
+      // if (authData.refreshToken) {
+      //   localStorage.setItem("refreshToken", authData.refreshToken);
+      // }
 
       return true;
     } catch (error) {

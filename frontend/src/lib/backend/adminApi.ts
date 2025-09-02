@@ -1,13 +1,13 @@
 import { apiFetch } from "./client";
 
 export interface AdminMemberDto {
-  id: number;
+  memberId: number;
   maskedEmail: string;
   maskedName: string;
   maskedPhone: string;
   status: "ACTIVE" | "INACTIVE";
-  createdAt: string;
-  updatedAt: string;
+  createDate: string;
+  modifyDate: string;
 }
 
 export interface MemberResponseDto {
