@@ -392,31 +392,34 @@ export const authAPI = {
   },
 
   // 비밀번호 변경
-  async changePassword(memberId, newPassword) {
+  async changePassword(memberId, currentPassword, newPassword) {
     try {
-      const token = localStorage.getItem("authToken");
+      //const token = localStorage.getItem("authToken");
       const response = await fetch(
-        `http://localhost:8080/api/v1/members/${memberId}/password`,
+        `http://localhost:8080/api/v1/members/password`,
         {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            //Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ newPassword }),
+          body: JSON.stringify({
+            currentPassword: currentPassword,
+            newPassword: newPassword,
+          }),
           credentials: "include",
         }
       );
 
-      const data = await response.json();
+      // const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(
-          data.msg || data.message || `HTTP error! status: ${response.status}`
-        );
-      }
+      // if (!response.ok) {
+      //   throw new Error(
+      //     data.msg || data.message || `HTTP error! status: ${response.status}`
+      //   );
+      // }
 
-      return data;
+      // return data;
     } catch (error) {
       console.error("비밀번호 변경 API 에러:", error);
       throw error;

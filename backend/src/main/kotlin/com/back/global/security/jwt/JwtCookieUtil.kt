@@ -22,7 +22,7 @@ class JwtCookieUtil(private val jwtConfig: JwtConfig) {
             }
         }
         return ResponseCookie.from(cookieName, token)
-            .httpOnly(true)
+            .httpOnly(false)
             .secure(false)
             .path("/")
             .maxAge(maxAge)

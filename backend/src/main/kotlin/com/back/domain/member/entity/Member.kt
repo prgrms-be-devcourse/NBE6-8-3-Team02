@@ -23,10 +23,10 @@ class Member(
 ): BaseEntity(){
 
     fun updateName(newName:String){
-        if (this.name==name){
+        if (this.name == newName) {
             throw UnchangedMemberDetailsException("같은 이름으로 수정할 수 없습니다.")
         }
-        this.name = name
+        this.name = newName
     }
 
     fun updatePhoneNumber(newPhoneNumber: String){
