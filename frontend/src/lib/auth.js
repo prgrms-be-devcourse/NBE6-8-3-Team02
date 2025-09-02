@@ -492,35 +492,36 @@ export const authAPI = {
   // 회원 탈퇴
   async withdrawAccount(memberId) {
     try {
-      const token = await this.getValidAccessToken();
-      if (!token) {
-        throw new Error("유효한 토큰이 없습니다.");
+      // const token = await this.getValidAccessToken();
+      // if (!token) {
+      //   throw new Error("유효한 토큰이 없습니다.");
+      // }
+
+      const response = await fetch(`http://localhost:8080/api/v1/members`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          //Authorization: `Bearer ${token}`,
+        },
+        credentials: "include",
+      });
+
+      if (response.status === 200) {
+        alert("성공적으로 회원 탈퇴 되었습니다.");
       }
 
-      const response = await fetch(
-        `http://localhost:8080/api/v1/members/${memberId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          credentials: "include",
-        }
-      );
+      // const data = await response.json();
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data.msg || data.message || `HTTP error! status: ${response.status}`
-        );
-      }
+      // if (!response.ok) {
+      //   throw new Error(
+      //     data.msg || data.message || `HTTP error! status: ${response.status}`
+      //   );
+      // }
 
       // 회원 탈퇴 성공 시 로그아웃 처리
       await this.logout();
 
-      return data;
+      //return data;
     } catch (error) {
       console.error("회원 탈퇴 API 에러:", error);
       throw error;
