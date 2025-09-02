@@ -91,7 +91,8 @@ const getValidAccessToken = async (): Promise<string | null> => {
   return accessToken;
 };
 
-export const apiFetch = async (url: string, options?: RequestInit) => {
+{
+  /*export const apiFetch = async (url: string, options?: RequestInit) => {
   options = options || {};
   options.credentials = "include";
 
@@ -205,4 +206,89 @@ export const apiFetch = async (url: string, options?: RequestInit) => {
       return responseText ? JSON.parse(responseText) : {};
     }
   );
+};*/
+}
+export const apiFetch = async (url: string, options?: RequestInit) => {
+  options = options || {};
+  options.credentials = "include";
+
+  if (!options.headers) options.headers = {};
+  const headers = new Headers(options.headers);
+
+  // Authorization 헤더 처리
+  if (!headers.has("Authorization")) {
+    try {
+      const token = await getValidAccessToken();
+      if (token) headers.set("Authorization", `Bearer ${token}`);
+    } catch (error) {
+      console.error("Failed to get valid token:", error);
+      throw error;
+    }
+  }
+
+  // Content-Type 처리
+  if (
+    options.body &&
+    !(options.body instanceof FormData) &&
+    !headers.has("Content-Type")
+  ) {
+    headers.set("Content-Type", "application/json; charset=utf-8");
+  }
+
+  options.headers = headers;
+
+  const res = await fetch(`${NEXT_PUBLIC_API_BASE_URL}${url}`, options);
+
+  // 응답 텍스트 읽기
+  const responseText = await res.text();
+
+  // JSON 파싱 시도, 실패하면 텍스트 그대로 반환
+  let data: any;
+  try {
+    data = responseText ? JSON.parse(responseText) : {};
+  } catch {
+    data = { message: responseText };
+  }
+
+  // 에러 처리
+  if (!res.ok) {
+    // 401/403일 때 토큰 갱신 후 재시도
+    if (
+      (res.status === 401 || res.status === 403) &&
+      typeof refreshAccessToken === "function"
+    ) {
+      try {
+        const newToken = await refreshAccessToken();
+        if (newToken) {
+          headers.set("Authorization", `Bearer ${newToken}`);
+          options.headers = headers;
+
+          const retryRes = await fetch(
+            `${NEXT_PUBLIC_API_BASE_URL}${url}`,
+            options
+          );
+          const retryText = await retryRes.text();
+          try {
+            const retryData = retryText ? JSON.parse(retryText) : {};
+            if (!retryRes.ok) throw retryData;
+            return retryData;
+          } catch {
+            throw {
+              message: retryText || `HTTP error! status: ${retryRes.status}`,
+            };
+          }
+        }
+      } catch (refreshError) {
+        console.error("Token refresh failed:", refreshError);
+      }
+    }
+
+    // 최종 에러 던지기
+    throw data.message
+      ? data
+      : { message: `HTTP error! status: ${res.status}` };
+  }
+
+  // 성공 시 데이터 반환
+  return data;
 };
