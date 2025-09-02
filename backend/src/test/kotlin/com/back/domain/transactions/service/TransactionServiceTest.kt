@@ -162,4 +162,5 @@ class TransactionServiceTest (
         val result = transactionService.findTransactionsByAssetId(listOf(1))
         assertTrue(result.containsKey(1))
     }
+
 }
