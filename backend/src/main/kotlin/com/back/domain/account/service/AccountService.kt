@@ -53,8 +53,8 @@ class AccountService(
 
     // 회원별 계좌 목록 조회
     fun getAccountsByMemberId(member: Member): List<Account> {
-        // 삭제되지 않은 계좌만 조회
-        return accountRepository.findAllByMemberIdAndIsDeletedFalse(member.id)
+        // 삭제되지 않은 계좌만 조회 (member.email 사용)
+        return accountRepository.findAllByMemberEmailAndIsDeletedFalse(member.email)
     }
 
     // 특정 계좌 조회 (소유자 검증 포함)

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/v1/accounts")
 @Tag(name = "Account", description = "계좌 컨트롤러")
-class 1     ApiV1AccountController(
+class ApiV1AccountController(
     private val accountService: AccountService
 ) {
 

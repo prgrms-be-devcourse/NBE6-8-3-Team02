@@ -1,0 +1,5 @@
+[33mfce68ba[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mbe/feature/account[m[33m)[m rebase2
+[33mc723953[m[33m ([m[1;31morigin/be/feature/account[m[33m)[m feat: Account 도메인 구현
+[33m1db1d57[m[33m ([m[1;32mmain[m[33m)[m fix(be): Goal Entity 오타 수정 (#40)
+[33me1e9443[m feat(be): Member 관리 API Kotlin으로 전환
+[33m644da83[m Merge pull request #35 from prgrms-be-devcourse/be/feature/test

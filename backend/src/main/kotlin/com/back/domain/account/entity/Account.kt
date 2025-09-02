@@ -73,7 +73,7 @@ class Account(
 
     // 소유자 검증 메서드
     fun validateOwner(member: Member) {
-        if (this.member != member) {
+        if (this.member.email != member.email) {
             throw AccountAccessDeniedException()
         }
     }
