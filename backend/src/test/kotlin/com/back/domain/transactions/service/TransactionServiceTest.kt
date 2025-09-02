@@ -36,6 +36,9 @@ class TransactionServiceTest (
     private lateinit var transaction1: Transaction
     private lateinit var transaction2: Transaction
     private lateinit var transaction3: Transaction
+    private var tId1 : Int = 1
+    private var tId2 : Int = 2
+    private var tId3 : Int = 3
 
     @BeforeAll
     fun setUp() {
@@ -65,9 +68,9 @@ class TransactionServiceTest (
             LocalDateTime.parse("2025-09-01T12:00:00")
         )
 
-        transactionRepository.save(transaction1)
-        transactionRepository.save(transaction2)
-        transactionRepository.save(transaction3)
+        tId1 = transactionRepository.save(transaction1).id
+        tId2 = transactionRepository.save(transaction2).id
+        tId3 = transactionRepository.save(transaction3).id
     }
 
     @Test
@@ -97,9 +100,9 @@ class TransactionServiceTest (
     @Test
     @DisplayName("findById 테스트")
     fun findByIdTest() {
-        val result1 = transactionService.findById(1)
-        val result2 = transactionService.findById(2)
-        val result3 = transactionService.findById(3)
+        val result1 = transactionService.findById(tId1)
+        val result2 = transactionService.findById(tId2)
+        val result3 = transactionService.findById(tId3)
 
         assertEquals(transaction1, result1)
         assertEquals(transaction2, result2)
@@ -110,14 +113,14 @@ class TransactionServiceTest (
     @DisplayName("updateById 테스트")
     fun updateByIdTest() {
         val dto = UpdateTransactionRequestDto(
-            1,
+            tId1,
             "REMOVE",
             2000,
             "업데이트",
             "2025-09-01T12:30:00"
         )
 
-        assertEquals(transaction1, transactionService.findById(1))
+        assertEquals(transaction1, transactionService.findById(tId1))
         val update = transactionService.updateById(dto)
         assertEquals(transaction1, update)
     }
