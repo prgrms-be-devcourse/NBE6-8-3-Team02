@@ -12,4 +12,9 @@ data class UpdateNoticeRequestDto (
         content = notice.content,
         fileUrl = notice.fileUrl
     )
+    constructor(title: String, content: String) : this(
+        title = title,
+        content = content,
+        fileUrl = ""
+    )
 }

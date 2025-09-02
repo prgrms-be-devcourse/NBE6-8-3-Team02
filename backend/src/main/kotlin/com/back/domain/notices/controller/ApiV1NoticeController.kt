@@ -26,9 +26,9 @@ class ApiV1NoticeController (
    @GetMapping
    @Operation(summary = "공지사항 전체 조회 (검색 기능 + 페이징 포함")
    fun getAllNotices(
-       @RequestParam(required = false) search: String,
-       @RequestParam(required = false) page: Int,
-       @RequestParam(required = false) pageSize: Int,
+       @RequestParam(required = false, defaultValue = "" ) search: String,
+       @RequestParam(required = false, defaultValue = "0") page: Int,
+       @RequestParam(required = false, defaultValue = "10") pageSize: Int,
    ): ResponseEntity<RsData<Page<NoticeResponseDto>>> {
        val pageable = PageRequest.of(page, pageSize)
        val notices = noticeService.getAllNotices(search, pageable)
