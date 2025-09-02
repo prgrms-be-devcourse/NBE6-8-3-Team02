@@ -378,15 +378,18 @@ export const authAPI = {
         }
       );
 
-      const data = await response.json();
+      //const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(
-          data.msg || data.message || `HTTP error! status: ${response.status}`
-        );
+      // if (!response.ok) {
+      //   throw new Error(
+      //     data.msg || data.message || `HTTP error! status: ${response.status}`
+      //   );
+      // }
+      if (response.ok) {
+        alert("임시 비밀번호가 발급되었습니다.");
       }
 
-      return data;
+      //return data;
     } catch (error) {
       console.error("비밀번호 재설정 API 에러:", error);
       throw error;

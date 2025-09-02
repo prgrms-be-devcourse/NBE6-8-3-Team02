@@ -59,7 +59,7 @@ export default function ForgotPasswordPage() {
 
     // 전화번호 형식 검증 (숫자만)
     if (!validatePhoneNumber(findAccountData.phoneNumber)) {
-      setError("올바른 전화번호 형식을 입력해주세요. (예: 01012345678)");
+      setError("올바른 전화번호 형식을 입력해주세요. (11자리)");
       return;
     }
 
@@ -111,7 +111,7 @@ export default function ForgotPasswordPage() {
 
     // 전화번호 형식 검증 (숫자만)
     if (!validatePhoneNumber(resetPasswordData.phoneNumber)) {
-      setError("올바른 전화번호 형식을 입력해주세요. (예: 01012345678)");
+      setError("올바른 전화번호 형식을 입력해주세요. (11자)");
       return;
     }
 
@@ -122,8 +122,9 @@ export default function ForgotPasswordPage() {
     try {
       const response = await authAPI.resetPassword(resetPasswordData);
 
-      setIsPasswordResetMode(true);
-      setSuccess("계정을 확인했습니다. 새 비밀번호를 입력해주세요.");
+      //setIsPasswordResetMode(true);
+      //setSuccess("계정을 확인했습니다. 새 비밀번호를 입력해주세요.");
+      setSuccess("임시 비밀번호가 발급되었습니다. \n이메일을 확인해주세요.");
       setIsLoading(false);
     } catch (error) {
       setError(
@@ -135,63 +136,63 @@ export default function ForgotPasswordPage() {
     }
   }, [resetPasswordData]);
 
-  const handlePasswordReset = useCallback(async () => {
-    if (!newPassword.trim()) {
-      setError("새 비밀번호를 입력해주세요.");
-      return;
-    }
+  //   const handlePasswordReset = useCallback(async () => {
+  //     if (!newPassword.trim()) {
+  //       setError("새 비밀번호를 입력해주세요.");
+  //       return;
+  //     }
 
-    if (!confirmPassword.trim()) {
-      setError("비밀번호 확인을 입력해주세요.");
-      return;
-    }
+  //     if (!confirmPassword.trim()) {
+  //       setError("비밀번호 확인을 입력해주세요.");
+  //       return;
+  //     }
 
-    if (newPassword !== confirmPassword) {
-      setError("비밀번호가 일치하지 않습니다.");
-      return;
-    }
+  //     if (newPassword !== confirmPassword) {
+  //       setError("비밀번호가 일치하지 않습니다.");
+  //       return;
+  //     }
 
-    // 비밀번호 길이 검증 (6-20자)
-    if (newPassword.length < 6 || newPassword.length > 20) {
-      setError("비밀번호는 6자 이상 20자 이하여야 합니다.");
-      return;
-    }
+  //     // 비밀번호 길이 검증 (6-20자)
+  //     if (newPassword.length < 6 || newPassword.length > 20) {
+  //       setError("비밀번호는 6자 이상 20자 이하여야 합니다.");
+  //       return;
+  //     }
 
-    setIsLoading(true);
-    setError("");
+  //     setIsLoading(true);
+  //     setError("");
 
-    try {
-      // 실제 API 호출
-      const userId = localStorage.getItem("userId");
-      if (!userId) {
-        setError("사용자 정보를 찾을 수 없습니다. 다시 로그인해주세요.");
-        setIsLoading(false);
-        return;
-      }
+  //     try {
+  //       // 실제 API 호출
+  //       //   const userId = localStorage.getItem("userId");
+  //       //   if (!userId) {
+  //       //     setError("사용자 정보를 찾을 수 없습니다. 다시 로그인해주세요.");
+  //       //     setIsLoading(false);
+  //       //     return;
+  //       //   }
 
-      console.log("비밀번호 변경 시도:", { userId, newPassword });
-      const response = await authAPI.changePassword(
-        parseInt(userId),
-        newPassword
-      );
-      console.log("비밀번호 변경 응답:", response);
+  //       //console.log("비밀번호 변경 시도:", { userId, newPassword });
+  //       const response = await authAPIPassword(
+  //         //parseInt(userId),
+  //         newPassword
+  //       );
+  //       console.log("비밀번호 변경 응답:", response);
 
-      setSuccess("비밀번호가 성공적으로 변경되었습니다!");
-      setIsLoading(false);
-      // 2초 후 로그인 페이지로 이동
-      setTimeout(() => {
-        router.push("/auth/login");
-      }, 2000);
-    } catch (error) {
-      console.error("비밀번호 재설정 실패:", error);
-      setError(
-        error instanceof Error
-          ? error.message
-          : "비밀번호 변경에 실패했습니다. 잠시 후 다시 시도해주세요."
-      );
-      setIsLoading(false);
-    }
-  }, [newPassword, confirmPassword, router]);
+  //       setSuccess("비밀번호가 성공적으로 변경되었습니다!");
+  //       setIsLoading(false);
+  //       // 2초 후 로그인 페이지로 이동
+  //       setTimeout(() => {
+  //         router.push("/auth/login");
+  //       }, 2000);
+  //     } catch (error) {
+  //       console.error("비밀번호 재설정 실패:", error);
+  //       setError(
+  //         error instanceof Error
+  //           ? error.message
+  //           : "비밀번호 변경에 실패했습니다. 잠시 후 다시 시도해주세요."
+  //       );
+  //       setIsLoading(false);
+  //     }
+  //   }, [newPassword, confirmPassword, router]);
 
   const handleBackToLogin = useCallback(() => {
     router.push("/auth/login");
@@ -443,31 +444,40 @@ export default function ForgotPasswordPage() {
                         <Input
                           id="reset-phone"
                           type="tel"
-                          placeholder="가입한 전화번호를 입력하세요 (01012345678)"
-                          value={resetPasswordData.phoneNumber}
+                          placeholder="가입한 전화번호를 입력하세요"
+                          value={displayResetPhone}
                           onChange={(e) => {
                             const rawValue = e.target.value.replace(
                               /[^0-9]/g,
                               ""
-                            );
+                            ); // 숫자만
                             let formatted = rawValue;
-                            if (rawValue.length === 11) {
+
+                            // 최소 수정: 입력 중에도 점진적으로 - 붙이기
+                            if (rawValue.length < 4) {
+                              formatted = rawValue;
+                            } else if (rawValue.length < 7) {
                               formatted = rawValue.replace(
-                                /(\d{3})(\d{4})(\d{4})/,
+                                /(\d{3})(\d+)/,
+                                "$1-$2"
+                              );
+                            } else if (rawValue.length <= 10) {
+                              formatted = rawValue.replace(
+                                /(\d{3})(\d{3})(\d+)/,
                                 "$1-$2-$3"
                               );
-                            } else if (rawValue.length === 10) {
+                            } else {
                               formatted = rawValue.replace(
-                                /(\d{3})(\d{3})(\d{4})/,
+                                /(\d{3})(\d{4})(\d+)/,
                                 "$1-$2-$3"
                               );
                             }
 
-                            setDisplayResetPhone(formatted);
+                            setDisplayResetPhone(formatted); // 화면용
                             setResetPasswordData({
                               ...resetPasswordData,
-                              phoneNumber: rawValue,
-                            }); // 서버에는 숫자만
+                              phoneNumber: rawValue, // 서버 전송용
+                            });
                             setError("");
                             setSuccess("");
                           }}
@@ -518,7 +528,7 @@ export default function ForgotPasswordPage() {
                             }}
                             onKeyPress={(e) => {
                               if (e.key === "Enter") {
-                                handlePasswordReset();
+                                handleResetPassword();
                               }
                             }}
                           />
@@ -581,7 +591,7 @@ export default function ForgotPasswordPage() {
                             }}
                             onKeyPress={(e) => {
                               if (e.key === "Enter") {
-                                handlePasswordReset();
+                                handleResetPassword();
                               }
                             }}
                           />
@@ -646,7 +656,7 @@ export default function ForgotPasswordPage() {
                           뒤로가기
                         </Button>
                         <Button
-                          onClick={handlePasswordReset}
+                          onClick={handleResetPassword}
                           className="flex-1"
                           disabled={isLoading}
                         >
