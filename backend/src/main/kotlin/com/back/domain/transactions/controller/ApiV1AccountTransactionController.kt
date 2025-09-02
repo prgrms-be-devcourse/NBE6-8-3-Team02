@@ -33,7 +33,7 @@ class ApiV1AccountTransactionController (
                 "거래가 등록되었습니다",
                 AccountTransactionDto(accountTransaction)
             ),
-            HttpStatus.CREATED
+            HttpStatus.OK
         )
     }
 
