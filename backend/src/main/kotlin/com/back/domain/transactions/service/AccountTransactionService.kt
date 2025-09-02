@@ -54,6 +54,13 @@ class AccountTransactionService (
         return accountTransactionRepository.findAll()
     }
 
+    fun deleteById(id: Int) : AccountTransaction {
+        val accountTransaction = accountTransactionRepository.findById(id)
+            .orElseThrow { IllegalArgumentException("존재하지 않는 거래입니다.") }
+        accountTransactionRepository.deleteById(id)
+        return accountTransaction
+    }
+
     fun findAccTransactionsByAccountIds(accountIds: List<Int>): Map<Int, List<AccountTransactionDto>> {
         val allTransactions: List<AccountTransaction> = accountTransactionRepository.findByAccountIdIn(accountIds)
 
