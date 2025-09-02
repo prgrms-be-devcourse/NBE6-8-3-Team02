@@ -1,5 +1,10 @@
 package com.back.global.initData
 
+import com.back.domain.account.entity.Account
+import com.back.domain.account.repository.AccountRepository
+import com.back.domain.asset.entity.Asset
+import com.back.domain.asset.entity.AssetType
+import com.back.domain.asset.repository.AssetRepository
 import com.back.domain.member.entity.Member
 import com.back.domain.member.entity.MemberRole
 import com.back.domain.member.repository.MemberRepository
@@ -13,6 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder
 @Configuration
 class TestInitData (
     private val memberRepository: MemberRepository,
+    private val assetRepository: AssetRepository,
+    private val accountRepository: AccountRepository,
     private val passwordEncoder: PasswordEncoder,
 ) {
     @Bean
@@ -29,10 +36,10 @@ class TestInitData (
             )
         }
 
-        if (memberRepository.findByEmail("user1@test.com") == null) {
+        if (memberRepository.findByEmail("user@test.com") == null) {
             memberRepository.save(
                 Member(
-                    "user1@test.com",
+                    "user@test.com",
                     passwordEncoder.encode("user123"),
                     "유저",
                     "010-1111-1111",
@@ -40,5 +47,12 @@ class TestInitData (
                 )
             )
         }
+
+        val user = memberRepository.findByEmail("user@test.com")!!
+        val asset = Asset(user, "자산", AssetType.DEPOSIT, 140000)
+        assetRepository.save(asset)
+
+        val account = Account(user, "{계좌 번호}", 1000L, "계좌")
+        accountRepository.save(account)
     }
 }
