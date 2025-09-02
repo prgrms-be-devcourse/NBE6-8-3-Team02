@@ -31,6 +31,8 @@ jobs:
 
       - name: Build with Gradle (Kotlin DSL)
         run: ./gradlew build --no-daemon
+        env:
+          SPRING_PROFILES_ACTIVE: test
 
       - name: Publish test results as PR comment
         uses: EnricoMi/publish-unit-test-result-action@v1
