@@ -13,7 +13,6 @@ class AccountTransaction (
     @JoinColumn(name = "asset_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     val account: Account,
-    //Account 도메인 생성 이후 코드로 변환
     @Enumerated(EnumType.STRING) var type: TransactionType,
     var amount: Long,
     var content: String,

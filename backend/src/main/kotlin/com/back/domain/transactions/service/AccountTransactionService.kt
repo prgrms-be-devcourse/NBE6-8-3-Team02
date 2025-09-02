@@ -1,22 +1,25 @@
 package com.back.domain.transactions.service
 
+import com.back.domain.account.service.AccountService
+import com.back.domain.member.entity.Member
+import com.back.domain.transactions.dto.AccountTransactionDto
+import com.back.domain.transactions.dto.CreateAccTracRequestDto
 import com.back.domain.transactions.entity.AccountTransaction
+import com.back.domain.transactions.entity.TransactionType
 import com.back.domain.transactions.repository.AccountTransactionRepository
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service
 class AccountTransactionService (
-    private val accountTransactionRepository: AccountTransactionRepository
-    //private val accountService: AccountTransactionService,
-    // Account 도메인이 완료 되어야 함.
-    // 추가로, 원래 프로젝트에선 Repository, Service 둘다 선언되어 있었으나,
-    // SRP 원칙에 맞게 서비스만 사용하도록 변경.
+    private val accountTransactionRepository: AccountTransactionRepository,
+    private val accountService: AccountService
 ) {
-    /*
     @Transactional
     fun createAccountTransactions(dto: CreateAccTracRequestDto, member: Member): AccountTransaction {
-        val account: Account = accountService.getAccount(dto.accountId, member)
-        val accTrans: AccountTransaction = AccountTransaction(
+        val account = accountService.getAccount(dto.accountId, member)
+        val accTrans = AccountTransaction(
             account = account,
             type = TransactionType.valueOf(dto.type),
             amount = dto.amount,
@@ -24,19 +27,20 @@ class AccountTransactionService (
             date = LocalDateTime.parse(dto.date)
         )
         accountTransactionRepository.save(accTrans)
-        account.upDateBalance(TransactionType.valueOf(dto.type, dto.amount))
+        account.updateBalance(TransactionType.valueOf(dto.type), dto.amount)
         return accTrans
     }
-     */// Account, Member 도메인이 완성되어야 함.
 
-    /*
     fun findByAccountId(accountId: Int, member: Member): List<AccountTransaction> {
-        val account: Account = accountService.getAccount(dto.accountId, member).orElseThrow {
-            IllegalArgumentException("존재하지 않는 계좌입니다.")
-        }
+        accountService.getAccount(accountId, member)
         return accountTransactionRepository.findByAccountId(accountId)
     }
-     */// Account 도메인이 완성되어야 함.
+
+    //테스트용
+    fun findById(id: Int): AccountTransaction {
+        return accountTransactionRepository.findById(id)
+            .orElseThrow { IllegalArgumentException("존재하지 않는 거래입니다.") }
+    }
 
     fun count() : Long {
         return accountTransactionRepository.count()
@@ -50,7 +54,6 @@ class AccountTransactionService (
         return accountTransactionRepository.findAll()
     }
 
-    /*
     fun findAccTransactionsByAccountIds(accountIds: List<Int>): Map<Int, List<AccountTransactionDto>> {
         val allTransactions: List<AccountTransaction> = accountTransactionRepository.findByAccountIdIn(accountIds)
 
@@ -58,5 +61,4 @@ class AccountTransactionService (
             .groupBy { it.account.id }
             .mapValues { entry -> entry.value.map { AccountTransactionDto(it) } }
     }
-     */// Account 도메인이 완성되어야 함.
 }
