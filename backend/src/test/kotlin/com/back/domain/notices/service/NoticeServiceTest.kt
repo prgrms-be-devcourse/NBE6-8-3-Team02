@@ -1,7 +1,6 @@
 package com.back.domain.notices.service
 
 import com.back.domain.member.entity.Member
-import com.back.domain.member.entity.MemberRole
 import com.back.domain.member.repository.MemberRepository
 import com.back.domain.notices.dto.CreateNoticeRequestDto
 import com.back.domain.notices.dto.DeleteNoticeRequestDto
@@ -38,8 +37,8 @@ class NoticeServiceTest(
 
     @BeforeAll
     fun setUp() {
-        admin = Member("admin@test.com", "password", "관리자", "010-111-1111", role = MemberRole.ADMIN)
-        user = Member("user@test.com", "password", "사용자", "010-222-2222", role = MemberRole.USER)
+        admin = memberRepository.findByEmail("admintest@test.com")!!
+        user = memberRepository.findByEmail("usertest@test.com")!!
         memberRepository.save(admin)
         memberRepository.save(user)
 

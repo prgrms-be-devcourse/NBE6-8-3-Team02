@@ -28,7 +28,7 @@ class AccountTransactionServiceTest (
     @Autowired private val accountTransactionRepository: AccountTransactionRepository,
     @Autowired private val accountTransactionService: AccountTransactionService,
     @Autowired private val accountRepository: AccountRepository,
-    @Autowired private val memberRepository: MemberRepository
+    @Autowired private val membersRepository: MemberRepository
 ) {
     private lateinit var member: Member
     private lateinit var account: Account
@@ -38,22 +38,10 @@ class AccountTransactionServiceTest (
 
     @BeforeAll
     fun setUp() {
-        member = Member(
-            "test@test.com",
-            "password",
-            "테스트",
-            "010-1111-1111"
-        )
-        memberRepository.save(member)
+        member = membersRepository.findByEmail("usertest@test.com")!!
+        account = accountRepository.findAllByMemberId(member.id)[0]
 
-        account = Account(
-            member,
-            "{계좌 번호}",
-            10000L,
-            "테스트 계좌"
-        )
-        accountRepository.save(account)
-
+        accountTransactionRepository.deleteAll()
         accTrans1 = AccountTransaction(
             account,
             TransactionType.ADD,
