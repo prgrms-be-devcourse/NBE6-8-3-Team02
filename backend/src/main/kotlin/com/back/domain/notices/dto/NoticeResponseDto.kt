@@ -9,7 +9,7 @@ data class NoticeResponseDto (
     val content: String,
     val views: Int,
     val fileUrl: String?,
-    val wrtierName: String,
+    val writerName: String,
     val createDate: LocalDateTime,
     val updateDate: LocalDateTime
 ) {

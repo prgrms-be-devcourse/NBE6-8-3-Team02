@@ -1,7 +1,6 @@
 package com.back.global.security.jwt
 
 import jakarta.servlet.http.HttpServletRequest
-import org.springframework.http.CacheControl.maxAge
 import org.springframework.http.ResponseCookie
 import org.springframework.stereotype.Component
 
