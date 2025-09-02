@@ -17,6 +17,7 @@ import com.back.global.security.jwt.JwtCookieUtil
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.servlet.http.HttpServletRequest
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -37,7 +38,7 @@ class ApiV1AuthController(
 
     @Operation(summary = "로그인", description = "이메일과 비밀번호로 로그인 후 JWT 토큰을 받아 쿠키에 전달")
     @PostMapping("login")
-    fun login(@RequestBody request: MemberLoginRequest)
+    fun login(@Valid @RequestBody request: MemberLoginRequest)
             : ResponseEntity<MemberLoginResponse> {
         val member = authService.authenticateMember(request)
 
@@ -68,7 +69,7 @@ class ApiV1AuthController(
     @PostMapping("/find-account")
     @Operation(summary = "계정 찾기", description = "이름과 전화번호로 이메일을 찾습니다.")
     fun findAccount(
-        @RequestBody request: FindAccountRequest,
+        @Valid @RequestBody request: FindAccountRequest,
     ): ResponseEntity<FindAccountResponse> {
         val member = authService.findAccount(request)
         val response = member.toFindAccountResponse()
@@ -78,7 +79,7 @@ class ApiV1AuthController(
 
     @PostMapping("/reset-password")
     @Operation(summary = "비밀번호 재설정", description = "이메일, 이름, 전화번호 확인 후 비밀번호를 재설정합니다.")
-    fun resetPassword(@RequestBody request: ResetPasswordRequest): ResponseEntity<String> {
+    fun resetPassword(@Valid @RequestBody request: ResetPasswordRequest): ResponseEntity<String> {
         resetPasswordService.resetPassword(request)
 
         return ResponseEntity.ok("임시 비밀번호가 발급되었습니다.")

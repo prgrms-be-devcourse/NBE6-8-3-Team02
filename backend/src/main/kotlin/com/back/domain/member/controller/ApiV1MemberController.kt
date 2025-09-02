@@ -11,7 +11,8 @@ import com.back.domain.member.service.MemberService
 import com.back.global.security.CustomMemberDetails
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.apache.coyote.Response
+import jakarta.validation.Valid
+import jakarta.validation.constraints.Email
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -31,7 +32,7 @@ class ApiV1MemberController(private val memberService: MemberService) {
 
     @PostMapping("/signup")
     @Operation(summary = "회원가입", description = "새로운 회원을 등록합니다.")
-    fun signUp(@RequestBody request: MemberSignUpRequest): ResponseEntity<MemberSignUpResponse> {
+    fun signUp(@Valid @RequestBody request: MemberSignUpRequest): ResponseEntity<MemberSignUpResponse> {
         val response = memberService.join(request)
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
@@ -39,9 +40,10 @@ class ApiV1MemberController(private val memberService: MemberService) {
 
     @PatchMapping
     @Operation(summary = "회원정보 수정", description = "회원 정보를 수정합니다.")
-    fun updateMember(@AuthenticationPrincipal memberDetails: CustomMemberDetails,
-                     @RequestBody request: MemberDetailsUpdateRequest
-    ): ResponseEntity<MemberDetailsUpdateResponse>{
+    fun updateMember(
+        @AuthenticationPrincipal memberDetails: CustomMemberDetails,
+        @Valid @RequestBody request: MemberDetailsUpdateRequest
+    ): ResponseEntity<MemberDetailsUpdateResponse> {
 
         val member = memberDetails.getMember()
         val response = memberService.updateMemberDetails(member, request)
@@ -62,7 +64,7 @@ class ApiV1MemberController(private val memberService: MemberService) {
     @Operation(summary = "비밀번호 변경", description = "회원의 비밀번호를 변경합니다.")
     fun changePassword(
         @AuthenticationPrincipal memberDetails: CustomMemberDetails,
-        @RequestBody request: MemberPasswordChangeRequest
+        @Valid @RequestBody request: MemberPasswordChangeRequest
     ): ResponseEntity<String> {
         val authMember = memberDetails.getMember()
         memberService.changePassword(authMember, request)
@@ -72,7 +74,12 @@ class ApiV1MemberController(private val memberService: MemberService) {
 
     @GetMapping("/check-email")
     @Operation(summary = "이메일 중복 검사", description = "이메일 중복 여부를 검사합니다.")
-    fun checkEmailDuplicate(@RequestParam email: String): ResponseEntity<Boolean> {
+    fun checkEmailDuplicate(
+        @RequestParam
+        @Email(message="올바른 이메일 형식이 아닙니다.")
+        email: String
+    ): ResponseEntity<Boolean> {
+
         val isDuplicate = memberService.isEmailDuplicate(email)
         return ResponseEntity.ok(isDuplicate)
     }

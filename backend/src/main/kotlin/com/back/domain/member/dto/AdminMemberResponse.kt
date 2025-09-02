@@ -24,10 +24,10 @@ data class AdminMemberResponse(
             return this.first() + "*".repeat(this.length - 1)
         }
 
-        //010으로 시작하는 11자리 전화번호만 취급
+        //11자리 휴대 전화번호만 취급
         fun String.maskPhone(): String {
             val first = this.substring(0, 3)
-            val last = this.substring(7)
+            val last = this.substring(9)
             return "$first-****-$last"
         }
     }
