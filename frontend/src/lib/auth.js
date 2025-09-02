@@ -459,27 +459,36 @@ export const authAPI = {
   // 로그아웃
   async logout() {
     try {
-      const token = localStorage.getItem("authToken");
+      //const token = localStorage.getItem("authToken");
 
-      if (token) {
-        const response = await fetch(
-          "http://localhost:8080/api/v1/auth/logout",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            credentials: "include",
-          }
-        );
-      }
+      //  if (token) {
+      //   const response = await fetch(
+      //     "http://localhost:8080/api/v1/auth/logout",
+      //     {
+      //       method: "POST",
+      //       headers: {
+      //         "Content-Type": "application/json",
+      //         //Authorization: `Bearer ${token}`,
+      //       },
+      //       credentials: "include",
+      //     }
+      //   );
+      // }
+
+      const response = await fetch("http://localhost:8080/api/v1/auth/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          //Authorization: `Bearer ${token}`,
+        },
+        credentials: "include",
+      });
     } catch (error) {
       console.error("로그아웃 API 에러:", error);
     } finally {
       if (typeof window !== "undefined") {
-        localStorage.removeItem("authToken");
-        localStorage.removeItem("refreshToken");
+        //localStorage.removeItem("authToken");
+        //localStorage.removeItem("refreshToken");
         localStorage.removeItem("userId");
         localStorage.removeItem("userEmail");
         localStorage.removeItem("userRole");
