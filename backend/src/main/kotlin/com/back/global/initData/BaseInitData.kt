@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
 
-@Profile("!test")
+@Profile("!prod")
 @Configuration
 class BaseInitData(
     private val memberRepository: MemberRepository,
@@ -46,8 +46,10 @@ class BaseInitData(
     private lateinit var self: BaseInitData
 
     @Bean
-    fun baseInitDataApplicationRunner() = ApplicationRunner {
-        self.initializeAllData()
+    fun baseInitDataApplicationRunner(): ApplicationRunner {
+        return ApplicationRunner {
+            self.initializeAllData()
+        }
     }
 
     @Transactional
@@ -194,7 +196,7 @@ class BaseInitData(
         //유저2
         val user2 = memberRepository.findByEmail("user2@test.com")!!
         listOf(
-            Asset(user2, "2-예금1", AssetType.DEPOSIT, 10000,),
+            Asset(user2, "2-예금1", AssetType.DEPOSIT, 10000),
             Asset(user2, "2-주식1", AssetType.STOCK, 20000),
             Asset(user2, "2-부동산1", AssetType.REAL_ESTATE, 30000)
         ).forEach { assetRepository.save(it) }
@@ -213,23 +215,26 @@ class BaseInitData(
             return
 
         //유저1
-        val asset1 = assetRepository.findById(1).get()
-        val asset2 = assetRepository.findById(4).get()
-        val asset3 = assetRepository.findById(6).get()
+        val user1 = memberRepository.findByEmail("user1@test.com")!!
+        val asset1 = assetRepository.findByMemberIdAndName(user1.id, "KB 적금")!!
+        val asset2 = assetRepository.findByMemberIdAndName(user1.id, "삼성전자")!!
+        val asset3 = assetRepository.findByMemberIdAndName(user1.id, "압구정 현대")!!
         listOf(
             Transaction(asset1, TransactionType.ADD, 30000, "적금 이자", LocalDateTime.of(2025, 7, 23, 0, 0, 0)),
             Transaction(asset2, TransactionType.REMOVE, 12000, "주가 하락", LocalDateTime.of(2025, 7, 1, 0, 0, 0)),
             Transaction(asset3, TransactionType.ADD, 30000, "부동산 가치 상승", LocalDateTime.of(2025, 7, 9, 0, 0, 0)),
         ).forEach { transactionRepository.save(it) }
 
-        //유저1
-        val asset4 = assetRepository.findById(9).get()
+        //유저2
+        val user2 = memberRepository.findByEmail("user2@test.com")!!
+        val asset4 = assetRepository.findByMemberIdAndName(user2.id, "2-예금1")!!
         listOf(
             Transaction(asset4, TransactionType.ADD, 24000, "2입금", LocalDateTime.of(2025, 7, 1, 0, 0, 0)),
         ).forEach { transactionRepository.save(it) }
 
-        //유저1
-        val asset5 = assetRepository.findById(12).get()
+        //유저3
+        val user3 = memberRepository.findByEmail("user3@test.com")!!
+        val asset5 = assetRepository.findByMemberIdAndName(user3.id, "3-예금1")!!
         listOf(
             Transaction(asset5, TransactionType.ADD, 71000, "3입금", LocalDateTime.of(2025, 7, 1, 0, 0, 0)),
         ).forEach { transactionRepository.save(it) }

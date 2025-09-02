@@ -31,7 +31,7 @@ class ApiV1AssetController(
         val assetDto = AssetDto(asset)
         return ResponseEntity
             .status(HttpStatus.CREATED)
-            .body(RsData("200-1", "자산이 등록되었습니다.", assetDto))
+            .body(RsData("201-1", "자산이 등록되었습니다.", assetDto))
     }
 
     // 다건 조회
@@ -68,7 +68,7 @@ class ApiV1AssetController(
         val assetDto = AssetDto(asset)
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
-            .body(RsData("200-1", "${id}번 자산을 삭제했습니다.", assetDto))
+            .body(RsData("204-1", "${id}번 자산을 삭제했습니다.", assetDto))
     }
 
     // id 기반 수정

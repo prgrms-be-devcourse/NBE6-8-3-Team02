@@ -21,4 +21,6 @@ interface AssetRepository : JpaRepository<Asset, Int> {
     fun softDeleteById(id: Int)
 
     fun findAllByMemberId(memberId: Int): List<Asset>
+
+    fun findByMemberIdAndName(memberId: Int, name: String): Asset?
 }
