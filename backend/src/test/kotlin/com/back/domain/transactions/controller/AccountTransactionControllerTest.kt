@@ -69,5 +69,6 @@ class AccountTransactionControllerTest (
         mvc.perform(get("/api/v1/transactions/account"))
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.data.length()").value(0))
+
     }
 }
