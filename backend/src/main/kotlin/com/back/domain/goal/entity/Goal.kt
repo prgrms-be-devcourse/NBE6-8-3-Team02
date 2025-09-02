@@ -9,7 +9,6 @@ import jakarta.persistence.ManyToOne
 import org.hibernate.annotations.SoftDelete
 import java.time.LocalDateTime
 
-//import com.back.domain.member.entity.Member
 
 @Entity
 @SoftDelete
@@ -19,7 +18,7 @@ class Goal(
 
     var description: String,
     var targetAmount: Long,
-    var currentAmount: Long,
+    var currentAmount: Long = 0L,
     var deadline: LocalDateTime?,
 
     @Enumerated(EnumType.STRING)
