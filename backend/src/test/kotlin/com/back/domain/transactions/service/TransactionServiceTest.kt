@@ -42,6 +42,7 @@ class TransactionServiceTest (
         member = membersRepository.findByEmail("usertest@test.com")!!
         asset = assetRepository.findAllByMemberId(member.id)[0]
 
+        transactionRepository.deleteAll()
         transaction1 = Transaction(
             asset,
             TransactionType.ADD,

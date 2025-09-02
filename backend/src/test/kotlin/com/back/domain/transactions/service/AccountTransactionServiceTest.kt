@@ -41,6 +41,7 @@ class AccountTransactionServiceTest (
         member = membersRepository.findByEmail("usertest@test.com")!!
         account = accountRepository.findAllByMemberId(member.id)[0]
 
+        accountTransactionRepository.deleteAll()
         accTrans1 = AccountTransaction(
             account,
             TransactionType.ADD,
