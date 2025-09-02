@@ -1,7 +1,6 @@
 package com.back.domain.transactions.service
 
 import com.back.domain.asset.entity.Asset
-import com.back.domain.asset.entity.AssetType
 import com.back.domain.asset.repository.AssetRepository
 import com.back.domain.member.entity.Member
 import com.back.domain.member.repository.MemberRepository
@@ -40,22 +39,8 @@ class TransactionServiceTest (
 
     @BeforeAll
     fun setUp() {
-        member = Member(
-            "test@test.com",
-            "password",
-            "테스트",
-            "010-111-1111"
-        )
-        membersRepository.save(member)
-
-        asset = Asset(
-            member,
-            "테스트 자산",
-            AssetType.STOCK,
-            10000L,
-            true
-        )
-        assetRepository.save(asset)
+        member = membersRepository.findByEmail("usertest@test.com")!!
+        asset = assetRepository.findAllByMemberId(member.id)[0]
 
         transaction1 = Transaction(
             asset,
