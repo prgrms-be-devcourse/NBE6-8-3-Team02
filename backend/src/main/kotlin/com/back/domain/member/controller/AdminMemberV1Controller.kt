@@ -5,6 +5,8 @@ import com.back.domain.member.extension.toAdminMemberResponse
 import com.back.domain.member.service.MemberService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.validation.constraints.Email
+import jakarta.validation.constraints.Size
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -62,7 +64,10 @@ class AdminMemberV1Controller(private val memberService: MemberService) {
     @GetMapping("/search")
     @Operation(summary = "회원 검색", description = "이메일과 이름으로 회원을 검색합니다.")
     fun searchMember(
-        @RequestParam email: String,
+        @RequestParam
+        @Email(message = "올바른 이메일 형식이 아닙니다.")
+        email: String,
+        @Size(min = 2, max = 20, message = "이름은 2~20자 사이여야 합니다.")
         @RequestParam name: String
     ): ResponseEntity<AdminMemberResponse> {
         val member = memberService.getMemberByEmailAndName(email, name)
