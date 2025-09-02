@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v1/transactions/asset")
-@Tag(name = "NoticeController", description = "자산 거래 컨트롤러")
+@Tag(name = "ApiV1TransactionController", description = "자산 거래 컨트롤러")
 class ApiV1TransactionController (
     private val transactionService: TransactionService,
 ) {
