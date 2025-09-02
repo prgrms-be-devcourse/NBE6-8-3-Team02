@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v1/notices")
-@Tag(name = "NoticeController", description = "공지사항 컨트롤러")
+@Tag(name = "ApiV1NoticeController", description = "공지사항 컨트롤러")
 class ApiV1NoticeController (
     private val noticeService: NoticeService,
 ) {
