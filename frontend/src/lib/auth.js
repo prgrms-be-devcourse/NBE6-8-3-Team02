@@ -551,9 +551,9 @@ export const authAPI = {
   // 로그인 상태를 강제로 설정하는 함수
   setAuthStatus(authData) {
     try {
-      if (authData.authToken) {
-        localStorage.setItem("authToken", authData.authToken);
-      }
+      // if (authData.authToken) {
+      //   localStorage.setItem("authToken", authData.authToken);
+      // }
       if (authData.userRole) {
         localStorage.setItem("userRole", authData.userRole);
       }
@@ -563,9 +563,9 @@ export const authAPI = {
       if (authData.userEmail) {
         localStorage.setItem("userEmail", authData.userEmail);
       }
-      if (authData.refreshToken) {
-        localStorage.setItem("refreshToken", authData.refreshToken);
-      }
+      // if (authData.refreshToken) {
+      //   localStorage.setItem("refreshToken", authData.refreshToken);
+      // }
 
       return true;
     } catch (error) {
