@@ -18,7 +18,7 @@ class MemberServiceTest {
     val memberRepository: MemberRepository = mockk()
     val passwordEncoder: PasswordEncoder = mockk()
 
-    val memberService=MemberService(memberRepository, passwordEncoder)
+    val memberService = MemberService(memberRepository, passwordEncoder)
     @Test
     @DisplayName("회원정보 수정 테스트")
     fun updateMemberDetails(){
