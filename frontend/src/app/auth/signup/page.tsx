@@ -22,6 +22,7 @@ export default function SignupPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [displayPhone, setDisplayPhone] = useState("");
   const router = useRouter();
 
   const handleSignup = useCallback(async () => {
@@ -58,7 +59,9 @@ export default function SignupPage() {
 
     // 전화번호 형식 검증 (숫자만)
     if (!validatePhoneNumber(signupData.phoneNumber)) {
-      setError("올바른 전화번호 형식을 입력해주세요. (11자리 숫자, 010으로 시작)");
+      setError(
+        "올바른 전화번호 형식을 입력해주세요. (11자리 숫자, 010으로 시작)"
+      );
       return;
     }
 
@@ -90,14 +93,17 @@ export default function SignupPage() {
       let formattedPhone;
 
       if (phoneNumber.length === 11 && phoneNumber.startsWith("010")) {
-        formattedPhone = phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+        formattedPhone = phoneNumber.replace(
+          /(\d{3})(\d{4})(\d{4})/,
+          "$1-$2-$3"
+        );
       } else {
         formattedPhone = phoneNumber; // 형식이 맞지 않으면 원본 사용
       }
 
       const signupDataWithFormattedPhone = {
         ...signupData,
-        phoneNumber: formattedPhone
+        phoneNumber: signupData.phoneNumber,
       };
 
       console.log("원본 전화번호:", signupData.phoneNumber);
@@ -115,8 +121,8 @@ export default function SignupPage() {
         // 서버에서 에러 응답이 온 경우
         setError(
           response.message ||
-          response.error ||
-          "회원가입에 실패했습니다. 다시 시도해주세요."
+            response.error ||
+            "회원가입에 실패했습니다. 다시 시도해주세요."
         );
       }
     } catch (error) {
@@ -155,9 +161,35 @@ export default function SignupPage() {
     []
   );
 
+  // const handlePhoneChange = useCallback(
+  //   (e: React.ChangeEvent<HTMLInputElement>) => {
+  //     setSignupData((prev) => ({ ...prev, phoneNumber: e.target.value }));
+  //     setError("");
+  //   },
+  //   []
+  // );
   const handlePhoneChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setSignupData((prev) => ({ ...prev, phoneNumber: e.target.value }));
+      // 숫자만 추출
+      const rawValue = e.target.value.replace(/[^0-9]/g, "");
+
+      // 화면 표시용 포맷팅 (예: 010-1234-5678)
+      let formattedValue = rawValue;
+      if (rawValue.length > 3 && rawValue.length <= 7) {
+        formattedValue = rawValue.replace(/(\d{3})(\d{1,4})/, "$1-$2");
+      } else if (rawValue.length > 7) {
+        formattedValue = rawValue.replace(
+          /(\d{3})(\d{4})(\d{1,4})/,
+          "$1-$2-$3"
+        );
+      }
+
+      // 상태에 raw 숫자와 표시용 문자열 둘 다 저장
+      setSignupData((prev) => ({
+        ...prev,
+        phoneNumber: rawValue, // 서버에 보낼 데이터 (숫자만)
+      }));
+      setDisplayPhone(formattedValue); // 화면 표시용
       setError("");
     },
     []
@@ -216,10 +248,13 @@ export default function SignupPage() {
               type="text"
               placeholder="이름을 입력하세요 (2-20자)"
               value={signupData.name}
-              onChange={useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-                setSignupData((prev) => ({ ...prev, name: e.target.value }));
-                setError(""); // 입력 시 에러 메시지 초기화
-              }, [])}
+              onChange={useCallback(
+                (e: React.ChangeEvent<HTMLInputElement>) => {
+                  setSignupData((prev) => ({ ...prev, name: e.target.value }));
+                  setError(""); // 입력 시 에러 메시지 초기화
+                },
+                []
+              )}
               onKeyPress={(e) => {
                 if (e.key === "Enter") {
                   handleSignup();
@@ -251,13 +286,14 @@ export default function SignupPage() {
               id="signup-phone"
               type="tel"
               placeholder="전화번호를 입력하세요 (11자리 숫자)"
-              value={signupData.phoneNumber}
-              onChange={(e) => {
+              value={displayPhone}
+              onChange={
                 // 숫자만 입력 허용
-                const value = e.target.value.replace(/[^0-9]/g, "");
-                setSignupData({ ...signupData, phoneNumber: value });
-                setError(""); // 입력 시 에러 메시지 초기화
-              }}
+                // const value = e.target.value.replace(/[^0-9]/g, "");
+                // setSignupData({ ...signupData, phoneNumber: value });
+                // setError(""); // 입력 시 에러 메시지 초기화
+                handlePhoneChange
+              }
               onKeyPress={(e) => {
                 if (e.key === "Enter") {
                   handleSignup();

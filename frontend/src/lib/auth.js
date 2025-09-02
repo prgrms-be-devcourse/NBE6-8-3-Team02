@@ -205,7 +205,9 @@ export const authAPI = {
       const data = await response.json();
 
       // 200 OK 또는 201 CREATED 모두 성공으로 처리
-      if (!response.ok && response.status !== 201) {
+      if (response.status == 201) {
+        alert(`반갑습니다. ${data.name}님`);
+      } else if (!response.ok && response.status !== 201) {
         throw new Error(
           data.msg ||
             data.message ||

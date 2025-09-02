@@ -93,7 +93,7 @@ class BaseInitData(
                     "admin@test.com",
                     passwordEncoder.encode("admin123"),
                     "관리자",
-                    "010-0000-0000",
+                    "01000000000",
                     MemberRole.ADMIN
                 )
             )
@@ -106,7 +106,7 @@ class BaseInitData(
                     "user1@test.com",
                     passwordEncoder.encode("user123"),
                     "유저1",
-                    "010-1111-1111",
+                    "01011111111",
                     MemberRole.USER
                 )
             )
@@ -118,7 +118,7 @@ class BaseInitData(
                     "user2@test.com",
                     passwordEncoder.encode("user123"),
                     "유저2",
-                    "010-2222-2222",
+                    "01022222222",
                     MemberRole.USER
                 )
             )
@@ -130,7 +130,7 @@ class BaseInitData(
                     "user3@test.com",
                     passwordEncoder.encode("user123"),
                     "유저3",
-                    "010-3333-3333",
+                    "01033333333",
                     MemberRole.USER
                 )
             )
@@ -143,7 +143,7 @@ class BaseInitData(
                     "test@example.com",
                     passwordEncoder.encode("test123"),
                     "테스트유저",
-                    "010-9999-9999",
+                    "01099999999",
                     MemberRole.USER
                 )
             )
