@@ -24,10 +24,10 @@ class TestInitData (
 ) {
     @Bean
     fun initData() = ApplicationRunner {
-        if (memberRepository.findByEmail("admin@test.com") == null) {
+        if (memberRepository.findByEmail("admintest@test.com") == null) {
             memberRepository.save(
                 Member(
-                    "admin@test.com",
+                    "admintest@test.com",
                     passwordEncoder.encode("admin123"),
                     "관리자",
                     "010-0000-0000",
@@ -36,10 +36,10 @@ class TestInitData (
             )
         }
 
-        if (memberRepository.findByEmail("user@test.com") == null) {
+        if (memberRepository.findByEmail("usertest@test.com") == null) {
             memberRepository.save(
                 Member(
-                    "user@test.com",
+                    "usertest@test.com",
                     passwordEncoder.encode("user123"),
                     "유저",
                     "010-1111-1111",
@@ -48,7 +48,7 @@ class TestInitData (
             )
         }
 
-        val user = memberRepository.findByEmail("user@test.com")!!
+        val user = memberRepository.findByEmail("usertest@test.com")!!
         val asset = Asset(user, "자산", AssetType.DEPOSIT, 140000)
         assetRepository.save(asset)
 

@@ -24,7 +24,7 @@ class NoticeControllerTest (
     @Autowired private val objectMapper: ObjectMapper
 ) {
     @Test
-    @WithUserDetails("admin@test.com")
+    @WithUserDetails("admintest@test.com")
     @DisplayName("""
         --통합 테스트--
         1. 공지사항 등록

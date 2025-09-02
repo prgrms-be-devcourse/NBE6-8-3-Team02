@@ -23,7 +23,7 @@ class AccountTransactionControllerTest (
     @Autowired private val objectMapper: ObjectMapper
 ) {
     @Test
-    @WithUserDetails("user@test.com")
+    @WithUserDetails("usertest@test.com")
     @DisplayName("""
         --통합 테스트--
         1. 거래 등록
