@@ -5,6 +5,8 @@ import com.back.domain.account.repository.AccountRepository
 import com.back.domain.asset.entity.Asset
 import com.back.domain.asset.entity.AssetType
 import com.back.domain.asset.repository.AssetRepository
+import com.back.domain.goal.entity.Goal
+import com.back.domain.goal.repository.GoalRepository
 import com.back.domain.member.entity.Member
 import com.back.domain.member.entity.MemberRole
 import com.back.domain.member.repository.MemberRepository
@@ -13,6 +15,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 import org.springframework.security.crypto.password.PasswordEncoder
+import java.time.LocalDateTime
 
 @Profile("test")
 @Configuration
@@ -21,6 +24,7 @@ class TestInitData (
     private val assetRepository: AssetRepository,
     private val accountRepository: AccountRepository,
     private val passwordEncoder: PasswordEncoder,
+    private val goalRepository: GoalRepository
 ) {
     @Bean
     fun initData() = ApplicationRunner {
@@ -54,5 +58,8 @@ class TestInitData (
 
         val account = Account(user, "{계좌 번호}", 1000L, "계좌")
         accountRepository.save(account)
+
+        val goal = Goal(user, "목표", 500000, deadline = LocalDateTime.now().plusMonths(6))
+        goalRepository.save(goal)
     }
 }
