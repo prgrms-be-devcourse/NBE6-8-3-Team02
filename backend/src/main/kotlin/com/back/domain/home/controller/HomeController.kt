@@ -23,5 +23,6 @@ class HomeController {
             |    <a href="/swagger-ui/index.html">API 문서로 이동</a>
             |</div>
         """.trimMargin()
+
     }
 }
