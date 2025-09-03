@@ -14,4 +14,5 @@ fun main(args: Array<String>) {
     logger.info("애플리케이션 시작을 알립니다.")
     logger.debug("DEBUG 레벨이 제대로 작동하는지 확인합니다.")
     runApplication<BackApplication>(*args)
+
 }
