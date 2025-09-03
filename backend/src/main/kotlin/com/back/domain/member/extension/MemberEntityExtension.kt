@@ -8,6 +8,7 @@ import com.back.domain.member.dto.AdminMemberResponse.Companion.maskName
 import com.back.domain.member.dto.AdminMemberResponse.Companion.maskPhone
 import com.back.domain.member.entity.Member
 import com.back.domain.member.entity.MemberRole
+import com.back.domain.member.entity.Snapshot
 
 fun Member.toMemberSignUpResponse() = MemberSignUpResponse(
     memberId = this.id,
@@ -70,4 +71,10 @@ fun Member.toAdminMemberResponse() = AdminMemberResponse(
 fun Member.toFindAccountResponse() = FindAccountResponse(
     name = this.name,
     email = this.email
+)
+
+fun Snapshot.toSnapshotResponse() = SnapshotResponse(
+    year = this.year,
+    month = this.month,
+    totalAsset = this.totalAsset
 )
