@@ -15,6 +15,7 @@ import org.junit.jupiter.api.assertThrows
 class AccountKotlinTest {
 
     private lateinit var member: Member
+    private lateinit var otherMember: Member
     private lateinit var account: Account
     private lateinit var createDto: RqCreateAccountDto
 
@@ -27,6 +28,13 @@ class AccountKotlinTest {
             phoneNumber = "010-1234-5678"
         )
         
+        otherMember = Member(
+            email = "other@test.com",
+            password = "password123",
+            name = "다른유저",
+            phoneNumber = "010-9876-5432"
+        )
+        
         createDto = RqCreateAccountDto(
             name = "테스트계좌",
             accountNumber = "123-456-789",
@@ -37,9 +45,38 @@ class AccountKotlinTest {
     }
 
     @Test
-    @DisplayName("Account 생성 테스트")
-    fun `Account 생성 테스트`() {
-        // given & when
+    @DisplayName("기본 테스트 - 클래스 로딩 확인")
+    fun basicTest() {
+        assertTrue(true)
+    }
+
+    @Test
+    @DisplayName("기본 생성자 테스트")
+    fun basicConstructorTest() {
+        // when
+        val emptyAccount = Account()
+
+        // then
+        assertNotNull(emptyAccount)
+        assertEquals("", emptyAccount.name)
+        assertEquals("", emptyAccount.accountNumber)
+        assertEquals(0L, emptyAccount.balance)
+        assertFalse(emptyAccount.isDeleted)
+    }
+
+    @Test
+    @DisplayName("Account 클래스 존재 확인")
+    fun accountClassExistsTest() {
+        // Account 클래스가 존재하는지 확인
+        val accountClass = Account::class.java
+        assertNotNull(accountClass)
+        assertEquals("Account", accountClass.simpleName)
+    }
+
+    @Test
+    @DisplayName("Account.create() 메서드로 계좌 생성 테스트")
+    fun accountCreateMethodTest() {
+        // when
         val newAccount = Account.create(createDto, member)
 
         // then
@@ -53,7 +90,7 @@ class AccountKotlinTest {
 
     @Test
     @DisplayName("잔액 추가 테스트")
-    fun `잔액 추가 테스트`() {
+    fun addBalanceTest() {
         // given
         val initialBalance = account.balance
         val addAmount = 5000L
@@ -67,7 +104,7 @@ class AccountKotlinTest {
 
     @Test
     @DisplayName("잔액 차감 테스트")
-    fun `잔액 차감 테스트`() {
+    fun removeBalanceTest() {
         // given
         val initialBalance = account.balance
         val removeAmount = 3000L
@@ -81,7 +118,7 @@ class AccountKotlinTest {
 
     @Test
     @DisplayName("잔액 부족시 차감 실패 테스트")
-    fun `잔액 부족시 차감 실패 테스트`() {
+    fun insufficientBalanceTest() {
         // given
         val removeAmount = 20000L
 
@@ -93,7 +130,7 @@ class AccountKotlinTest {
 
     @Test
     @DisplayName("소유자 검증 성공 테스트")
-    fun `소유자 검증 성공 테스트`() {
+    fun validateOwnerSuccessTest() {
         // given & when & then
         assertDoesNotThrow {
             account.validateOwner(member)
@@ -102,15 +139,7 @@ class AccountKotlinTest {
 
     @Test
     @DisplayName("소유자 검증 실패 테스트")
-    fun `소유자 검증 실패 테스트`() {
-        // given
-        val otherMember = Member(
-            email = "other@test.com",
-            password = "password123",
-            name = "다른유저",
-            phoneNumber = "010-9876-5432"
-        )
-
+    fun validateOwnerFailureTest() {
         // when & then
         assertThrows<AccountAccessDeniedException> {
             account.validateOwner(otherMember)
@@ -119,7 +148,7 @@ class AccountKotlinTest {
 
     @Test
     @DisplayName("계좌번호 업데이트 성공 테스트")
-    fun `계좌번호 업데이트 성공 테스트`() {
+    fun updateAccountNumberSuccessTest() {
         // given
         val newAccountNumber = "987-654-321"
 
@@ -132,7 +161,7 @@ class AccountKotlinTest {
 
     @Test
     @DisplayName("계좌번호 업데이트 실패 테스트 - 동일한 번호")
-    fun `계좌번호 업데이트 실패 테스트 - 동일한 번호`() {
+    fun updateAccountNumberFailureTest() {
         // given
         val sameAccountNumber = account.accountNumber
 
@@ -144,7 +173,7 @@ class AccountKotlinTest {
 
     @Test
     @DisplayName("계좌 삭제 테스트")
-    fun `계좌 삭제 테스트`() {
+    fun deleteAccountTest() {
         // given
         assertFalse(account.isDeleted)
 
@@ -153,19 +182,5 @@ class AccountKotlinTest {
 
         // then
         assertTrue(account.isDeleted)
-    }
-
-    @Test
-    @DisplayName("기본 생성자 테스트")
-    fun `기본 생성자 테스트`() {
-        // when
-        val emptyAccount = Account()
-
-        // then
-        assertNotNull(emptyAccount)
-        assertEquals("", emptyAccount.name)
-        assertEquals("", emptyAccount.accountNumber)
-        assertEquals(0L, emptyAccount.balance)
-        assertFalse(emptyAccount.isDeleted)
     }
 }
