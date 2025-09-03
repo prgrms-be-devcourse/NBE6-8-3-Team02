@@ -5,39 +5,47 @@ import com.back.domain.member.dto.MemberDetailsUpdateRequest
 import com.back.domain.member.entity.Member
 import com.back.domain.member.entity.MemberRole
 import com.back.domain.member.repository.MemberRepository
-import com.back.global.jpa.entity.BaseEntity
-import org.junit.jupiter.api.Assertions.*
+import io.mockk.every
+import io.mockk.mockk
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.springframework.security.crypto.password.PasswordEncoder
-import kotlin.test.Test
-import io.mockk.mockk
-import java.time.LocalDate
 import java.time.LocalDateTime
+import kotlin.test.Test
 
 class MemberServiceTest {
 
-    val memberRepository: MemberRepository = mockk()
-    val passwordEncoder: PasswordEncoder = mockk()
-    val validatePasswordService: ValidatePasswordService = mockk()
+    private val memberRepository: MemberRepository = mockk(relaxed = true)
+    private val passwordEncoder: PasswordEncoder = mockk(relaxed = true)
+    private val validatePasswordService: ValidatePasswordService = mockk(relaxed = true)
 
-    val memberService = MemberService(memberRepository, passwordEncoder, validatePasswordService)
+    private val memberService = MemberService(memberRepository, passwordEncoder, validatePasswordService)
+
     @Test
     @DisplayName("회원정보 수정 테스트")
-    fun updateMemberDetails(){
+    fun updateMemberDetails() {
+        // given
         val member = Member(
-            email = "admin@example.com",
+            email = "admintest@test.com",
             password = "admin123",
             name = "user1",
             phoneNumber = "010-9999-8888",
             role = MemberRole.ADMIN,
             isActive = false,
-        )
-        member.createDate= LocalDateTime.now()
-        member.modifyDate= LocalDateTime.now()
+        ).apply {
+            createDate = LocalDateTime.now()
+            modifyDate = LocalDateTime.now()
+        }
+
         val request = MemberDetailsUpdateRequest("관리자")
 
-        val result= memberService.updateMemberDetails(member,request)
+        // Repository mock 동작 정의 (update 후 저장되는 경우)
+        every { memberRepository.findByEmail("admintest@test.com") } returns member
 
-        assertEquals("관리자",result.name)
+        // when
+        val result = memberService.updateMemberDetails(member, request)
+
+        // then
+        assertEquals("관리자", result.name)
     }
 }

@@ -15,7 +15,7 @@ data class AccountTransactionDto(
 ) {
     constructor (accountTransaction: AccountTransaction) : this(
         id = accountTransaction.id,
-        accountId = 0, //accountTransaction.account.id
+        accountId = accountTransaction.account.id,
         type = accountTransaction.type.name,
         amount = accountTransaction.amount,
         content = accountTransaction.content,

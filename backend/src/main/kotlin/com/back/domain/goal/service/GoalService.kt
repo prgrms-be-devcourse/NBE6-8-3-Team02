@@ -1,9 +1,9 @@
 package com.back.domain.goal.service
 
-import com.back.domain.member.entity.Member
 import com.back.domain.goal.dto.GoalRequestDto
 import com.back.domain.goal.entity.Goal
 import com.back.domain.goal.repository.GoalRepository
+import com.back.domain.member.entity.Member
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
@@ -24,7 +24,7 @@ class GoalService(
 
     fun findByMember(member: Member, page: Int, size: Int): List<Goal> {
         val pageable: Pageable = PageRequest.of(page, size)
-        return goalRepository.findByMemberId(member.id, pageable).content
+        return goalRepository.findByMember(member, pageable).content
     }
 
 

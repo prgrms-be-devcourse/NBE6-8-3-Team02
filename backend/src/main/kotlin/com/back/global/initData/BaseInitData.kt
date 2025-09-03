@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
 
-@Profile("!prod")
+@Profile("!test")
 @Configuration
 class BaseInitData(
     private val memberRepository: MemberRepository,

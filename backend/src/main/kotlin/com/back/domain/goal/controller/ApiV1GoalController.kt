@@ -36,7 +36,7 @@ class ApiV1GoalController(
             RsData(
                 resultCode = "200-1",
                 // 여기도 userDetails.getMember()로 수정
-                msg = "목표(memberId: ${userDetails.getMember().id})를 조회합니다.",
+                msg = "목표(memberId: ${userDetails.getMember()})를 조회합니다.",
                 data = goalDtos
             )
         )

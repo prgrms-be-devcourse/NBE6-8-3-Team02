@@ -2,8 +2,6 @@ package com.back.domain.asset.controller
 
 import com.back.domain.asset.service.AssetService
 import com.back.domain.member.service.MemberService
-import com.back.global.initData.BaseInitData
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,9 +13,7 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import org.springframework.transaction.annotation.Transactional
 import kotlin.test.assertEquals
 
@@ -35,19 +31,11 @@ class ApiV1AssetControllerTest{
     @Autowired
     private lateinit var memberService: MemberService
 
-    @Autowired
-    private lateinit var baseInitData: BaseInitData
-
-    @BeforeEach
-    fun setUp() {
-        baseInitData.initializeAllData()
-    }
-
     @Test
     @DisplayName("자산 등록")
-    @WithUserDetails("user1@test.com")
+    @WithUserDetails("usertest@test.com")
     fun create() {
-        val member = memberService.findMemberByEmail("user1@test.com")
+        val member = memberService.findMemberByEmail("usertest@test.com")
 
         val resultActions = mvc
             .perform(
@@ -81,7 +69,7 @@ class ApiV1AssetControllerTest{
 
     @Test
     @DisplayName("자산 다건 조회")
-    @WithUserDetails("user1@test.com")
+    @WithUserDetails("usertest@test.com")
     fun gets() {
         val resultActions = mvc
             .perform(
@@ -100,7 +88,7 @@ class ApiV1AssetControllerTest{
 
     @Test
     @DisplayName("자산 단건 조회")
-    @WithUserDetails("user1@test.com")
+    @WithUserDetails("usertest@test.com")
     fun get() {
         val id = 1
 
@@ -125,7 +113,7 @@ class ApiV1AssetControllerTest{
 
     @Test
     @DisplayName("자산 삭제")
-    @WithUserDetails("user1@test.com")
+    @WithUserDetails("usertest@test.com")
     fun delete() {
         val id = 1
         val num = assetService.count()
@@ -148,7 +136,7 @@ class ApiV1AssetControllerTest{
 
     @Test
     @DisplayName("자산 수정")
-    @WithUserDetails("user1@test.com")
+    @WithUserDetails("usertest@test.com")
     fun update() {
         val id = 1
 
