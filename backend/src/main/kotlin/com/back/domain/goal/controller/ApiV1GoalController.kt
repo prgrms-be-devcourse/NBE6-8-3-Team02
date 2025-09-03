@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v1/goals")
-@Tag(name = "GoalController", description = "목표 컨트롤러")
+@Tag(name = "Goal", description = "목표 관련 API")
 class ApiV1GoalController(
     private val goalService: GoalService
 ) {
@@ -27,7 +27,6 @@ class ApiV1GoalController(
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "10") size: Int
     ): ResponseEntity<RsData<List<GoalDto>>> {
-        // userDetails.member -> userDetails.getMember()로 수정
         val goals = goalService.findByMember(userDetails.getMember(), page, size)
 
         val goalDtos = goals.map { GoalDto.from(it) }
@@ -35,7 +34,6 @@ class ApiV1GoalController(
         return ResponseEntity.ok(
             RsData(
                 resultCode = "200-1",
-                // 여기도 userDetails.getMember()로 수정
                 msg = "목표(memberId: ${userDetails.getMember()})를 조회합니다.",
                 data = goalDtos
             )
@@ -61,7 +59,6 @@ class ApiV1GoalController(
         @AuthenticationPrincipal userDetails: CustomMemberDetails,
         @Valid @RequestBody requestDto: GoalRequestDto
     ): ResponseEntity<RsData<GoalDto>> {
-        // userDetails.member -> userDetails.getMember()로 수정
         val goal = goalService.create(userDetails.getMember(), requestDto)
         return ResponseEntity
             .status(HttpStatus.CREATED)
