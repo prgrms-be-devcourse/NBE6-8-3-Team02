@@ -28,7 +28,6 @@ class ApiV1GoalController(
         @RequestParam(defaultValue = "10") size: Int
     ): ResponseEntity<RsData<List<GoalDto>>> {
         val goals = goalService.findByMember(userDetails.getMember(), page, size)
-
         val goalDtos = goals.map { GoalDto.from(it) }
 
         return ResponseEntity.ok(
@@ -44,6 +43,7 @@ class ApiV1GoalController(
     @Operation(summary = "단건 조회")
     fun getGoal(@PathVariable id: Int): ResponseEntity<RsData<GoalDto>> {
         val goal = goalService.findById(id)
+
         return ResponseEntity.ok(
             RsData(
                 resultCode = "200-1",
@@ -60,6 +60,7 @@ class ApiV1GoalController(
         @Valid @RequestBody requestDto: GoalRequestDto
     ): ResponseEntity<RsData<GoalDto>> {
         val goal = goalService.create(userDetails.getMember(), requestDto)
+
         return ResponseEntity
             .status(HttpStatus.CREATED)
             .body(
@@ -78,6 +79,7 @@ class ApiV1GoalController(
         @Valid @RequestBody requestDto: GoalRequestDto
     ): ResponseEntity<RsData<*>> {
         goalService.modify(id, requestDto)
+
         return ResponseEntity.ok(
             RsData<Unit>(
                 resultCode = "200-1",
@@ -90,6 +92,7 @@ class ApiV1GoalController(
     @Operation(summary = "삭제")
     fun delete(@PathVariable id: Int): ResponseEntity<RsData<*>> {
         goalService.delete(id)
+
         return ResponseEntity.ok(
             RsData<Unit>(
                 resultCode = "200-1",
