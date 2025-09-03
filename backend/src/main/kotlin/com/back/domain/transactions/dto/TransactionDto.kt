@@ -15,7 +15,7 @@ data class TransactionDto(
 ) {
     constructor(transaction: Transaction) : this(
         id = transaction.id,
-        assetId = 0, // transaction.asset.id
+        assetId = transaction.asset.id,
         type = transaction.type.name,
         amount = transaction.amount,
         content = transaction.content,
