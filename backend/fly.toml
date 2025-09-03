@@ -1,10 +1,10 @@
-# fly.toml app configuration file generated for backend-lively-sky-1979 on 2025-09-03T11:46:12+09:00
+# fly.toml app configuration file generated for whitedoggy-backend on 2025-09-03T14:23:12+09:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'backend-lively-sky-1979'
-primary_region = 'sjc'
+app = 'whitedoggy-backend'
+primary_region = 'nrt'
 
 [build]
 

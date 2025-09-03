@@ -24,4 +24,5 @@ class HomeController {
             |</div>
         """.trimMargin()
     }
+
 }
