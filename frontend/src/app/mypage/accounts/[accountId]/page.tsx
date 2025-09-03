@@ -50,7 +50,8 @@ export default function AccountDetailPage() {
 
         if (response.status == 200) {
           const result = await response.json();
-          setTransactions(result);
+          console.log(result.data);
+          setTransactions(result.data);
         } else {
           console.log("거래 목록 조회 실패");
         }
@@ -82,7 +83,9 @@ export default function AccountDetailPage() {
           }
         );
 
-        if (response.status == 201) {
+        console.log(response);
+
+        if (response.status == 200) {
           console.log("거래가 정상적으로 등록되었습니다.");
           addTransaction({
             id: Date.now(),
