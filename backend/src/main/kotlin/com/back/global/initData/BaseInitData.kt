@@ -9,7 +9,9 @@ import com.back.domain.goal.entity.Goal
 import com.back.domain.goal.repository.GoalRepository
 import com.back.domain.member.entity.Member
 import com.back.domain.member.entity.MemberRole
+import com.back.domain.member.entity.Snapshot
 import com.back.domain.member.repository.MemberRepository
+import com.back.domain.member.repository.SnapshotRepository
 import com.back.domain.notices.entity.Notice
 import com.back.domain.notices.repository.NoticeRepository
 import com.back.domain.transactions.entity.AccountTransaction
@@ -26,6 +28,7 @@ import org.springframework.context.annotation.Profile
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
+import java.time.YearMonth
 
 
 @Profile("!test")
@@ -38,7 +41,7 @@ class BaseInitData(
     private val goalRepository: GoalRepository,
     private val accountTransactionRepository: AccountTransactionRepository,
     private val noticeRepository: NoticeRepository,
-    //private val snapshotRepository: SnapshotRepository,
+    private val snapshotRepository: SnapshotRepository,
     private val passwordEncoder: PasswordEncoder,
 ) {
     @Lazy
@@ -268,7 +271,52 @@ class BaseInitData(
     }
 
     fun snapShotInit() {
+        if(snapshotRepository.count()>0) return
 
+        val user1 = memberRepository.findById(3).orElseThrow()
+        val user2 = memberRepository.findById(4).orElseThrow()
+        val user3 = memberRepository.findById(5).orElseThrow()
+
+        val now = YearMonth.now()
+
+
+        // user1: 100만 시작, 매달 +20만 증가
+        for (i in 0..5) {
+            val target = now.minusMonths(i.toLong())
+            val snapshot = Snapshot(
+                member = user1,
+                year = target.year,
+                month = target.monthValue,
+                totalAsset = 1000000L + (20000 * i)
+            )
+            snapshotRepository.save(snapshot)
+        }
+
+
+        // user2: 200만 시작, 매달 -10만 감소
+        for (i in 0..5) {
+            val target = now.minusMonths(i.toLong())
+            val snapshot= Snapshot(
+                member = user2,
+                year = target.year,
+                month = target.monthValue,
+                totalAsset = 2000000L - (10000 * i)
+            )
+            snapshotRepository.save(snapshot)
+        }
+
+
+        // user3: 150만 고정
+        for (i in 0..5) {
+            val target = now.minusMonths(i.toLong())
+            val snapshot = Snapshot(
+                member = user3,
+                year = target.year,
+                month = target.monthValue,
+                totalAsset = 1500000L
+            )
+            snapshotRepository.save(snapshot)
+        }
     }
 
     fun goalInit() {
