@@ -1,5 +1,6 @@
 
 plugins {
+    java
     kotlin("jvm") version "1.9.25"
     kotlin("plugin.spring") version "1.9.25"
     id("org.springframework.boot") version "3.5.5"
@@ -40,6 +41,8 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9")
     implementation("org.apache.commons:commons-lang3:3.18.0")
     implementation("io.github.microutils:kotlin-logging:3.0.5")
+
+    implementation("org.postgresql:postgresql:42.6.0")
 
     runtimeOnly("com.h2database:h2")
 
