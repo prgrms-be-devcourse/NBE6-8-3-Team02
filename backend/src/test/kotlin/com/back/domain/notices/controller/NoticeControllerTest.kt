@@ -86,5 +86,4 @@ class NoticeControllerTest (
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.data.content.length()").value(0))
     }
-
 }
