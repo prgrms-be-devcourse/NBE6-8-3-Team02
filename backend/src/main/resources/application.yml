@@ -1,3 +1,4 @@
+
 spring:
   h2:
     console:
@@ -41,3 +42,6 @@ logging:
     org.hibernate.orm.jdbc.extract: TRACE
     org.springframework.transaction.interceptor: TRACE
     com.back: debug
+server:
+  address: 0.0.0.0
+  port: 8080

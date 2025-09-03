@@ -1,8 +1,10 @@
 spring:
+  config:
+    import: "classpath:application-secret.yml"
   datasource:
     url: jdbc:postgresql://whitedoggy-app-1.internal:5432/app_db
     username: postgres
-    password: ${DB_PASSWORD}
+    password: ${custom.prod.db.password}
     driver-class-name: org.postgresql.Driver
     hikari:
       auto-commit: false
@@ -14,9 +16,6 @@ spring:
         format_sql: false
         highlight_sql: false
         use_sql_comments: false
-  server:
-    port: ${PORT:8080}       # Fly.io가 할당한 포트 사용
-    address: 0.0.0.0
 logging:
   level:
     com.back: INFO
