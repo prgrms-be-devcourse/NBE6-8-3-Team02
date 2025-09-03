@@ -44,7 +44,7 @@ class ApiV1GoalController(
 
     @GetMapping("/{id}")
     @Operation(summary = "단건 조회")
-    fun getGoal(@PathVariable id: Long): ResponseEntity<RsData<GoalDto>> {
+    fun getGoal(@PathVariable id: Int): ResponseEntity<RsData<GoalDto>> {
         val goal = goalService.findById(id)
         return ResponseEntity.ok(
             RsData(
@@ -77,7 +77,7 @@ class ApiV1GoalController(
     @PutMapping("/{id}")
     @Operation(summary = "수정")
     fun modify(
-        @PathVariable id: Long,
+        @PathVariable id: Int,
         @Valid @RequestBody requestDto: GoalRequestDto
     ): ResponseEntity<RsData<*>> {
         goalService.modify(id, requestDto)
@@ -91,7 +91,7 @@ class ApiV1GoalController(
 
     @DeleteMapping("/{id}")
     @Operation(summary = "삭제")
-    fun delete(@PathVariable id: Long): ResponseEntity<RsData<*>> {
+    fun delete(@PathVariable id: Int): ResponseEntity<RsData<*>> {
         goalService.delete(id)
         return ResponseEntity.ok(
             RsData<Unit>(

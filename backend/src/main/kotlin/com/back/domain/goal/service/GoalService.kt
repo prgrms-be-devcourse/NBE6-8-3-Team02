@@ -16,7 +16,7 @@ class GoalService(
     private val goalRepository: GoalRepository // 주 생성자를 통한 의존성 주입
 ) {
 
-    fun findById(id: Long): Goal {
+    fun findById(id: Int): Goal {
         return goalRepository.findByIdOrNull(id)
             ?: throw IllegalArgumentException("존재하지 않는 목표입니다.")
     }
@@ -36,7 +36,7 @@ class GoalService(
     }
 
     @Transactional
-    fun modify(id: Long, requestDto: GoalRequestDto) {
+    fun modify(id: Int, requestDto: GoalRequestDto) {
         val goal = findById(id) // 기존 findById 메소드 재활용
 
         // Entity의 update 메소드를 사용하여 상태 변경
@@ -49,7 +49,7 @@ class GoalService(
     }
 
     @Transactional
-    fun delete(id: Long) {
+    fun delete(id: Int) {
         val goal = findById(id) // ID 존재 여부 확인
         goalRepository.delete(goal)
     }

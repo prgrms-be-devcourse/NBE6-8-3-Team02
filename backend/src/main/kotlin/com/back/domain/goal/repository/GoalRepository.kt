@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 
-interface GoalRepository : JpaRepository<Goal, Long> {
-    fun id(id: Int): MutableList<Goal>
+interface GoalRepository : JpaRepository<Goal, Int> {
     fun findByMember(member : Member, pageable: Pageable) : Page<Goal>
+
 }

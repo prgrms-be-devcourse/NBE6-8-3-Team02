@@ -27,7 +27,7 @@ class Goal(
 ) : BaseEntity() {
 
     val memberId: Int
-        get() = member.id!!
+        get() = member.id
 
     fun update(
         description: String,
