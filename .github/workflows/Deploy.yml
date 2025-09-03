@@ -18,8 +18,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: application-secret.yml 생성
         env:
-          DB_PASSWORD: ${{ secrets.APPLICATION_SECRET_YML }}
-        run: echo "$DB_PASSWORD" > backend/src/main/resources/application-secret.yml
+          APPLICATION_SECRET: ${{ secrets.APPLICATION_SECRET_YML }}
+        run: echo "$APPLICATION_SECRET" > backend/src/main/resources/application-secret.yml
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - run: flyctl deploy --remote-only
         working-directory: backend
